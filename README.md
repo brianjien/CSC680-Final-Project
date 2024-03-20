@@ -41,3 +41,7 @@ The Chore Assigner app aims to simplify the process of assigning and tracking ho
 4. **Reminder System:**
    - Provide timely reminders to notify users of available tasks for assignment.
    - Remind users to complete assigned tasks at specified times.
+  
+### Wireframe:
+![CSC680 (1)](https://github.com/brianjien/CSC680-Final-Project/assets/62172612/0d19998a-b267-424b-8f74-9c0fc40011ea)
+
