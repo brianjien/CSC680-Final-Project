@@ -1,5 +1,5 @@
 # CSC680-Final-Project
-
+### Team Member: Chih Lin Chien, Hsin Yu Chen
 ## Introduction:
 The Chore Assigner app aims to simplify the process of assigning and tracking household chores among roommates or family members, while also allowing users to track shared expenses and communicate important messages. This app will enable users to easily assign tasks, track completion, record shared expenses, and communicate through a message board, fostering a more organized and cooperative living environment.
 
