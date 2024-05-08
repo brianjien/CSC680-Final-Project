@@ -129,7 +129,6 @@ class NoticeManager: ObservableObject {
 }
 
 // MARK: - User Manager
-// MARK: - User Manager
 class UserManager: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var currentUser: User?
