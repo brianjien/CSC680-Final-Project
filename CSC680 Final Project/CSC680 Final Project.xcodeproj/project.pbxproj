@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE956C962BEF682A00D28DF2 /* Login_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956C952BEF682A00D28DF2 /* Login_View.swift */; };
+		EE956C982BEF832700D28DF2 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956C972BEF832700D28DF2 /* RegistrationView.swift */; };
+		EE956C9C2BEF9C9300D28DF2 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956C9B2BEF9C9300D28DF2 /* SettingView.swift */; };
+		EE956C9E2BEF9F5600D28DF2 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956C9D2BEF9F5600D28DF2 /* TaskListView.swift */; };
+		EE956CA02BEFA07300D28DF2 /* TaskEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956C9F2BEFA07300D28DF2 /* TaskEditorView.swift */; };
+		EE956CAB2BEFA19A00D28DF2 /* AboutAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CA32BEFA19A00D28DF2 /* AboutAppView.swift */; };
+		EE956CAC2BEFA19A00D28DF2 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CA42BEFA19A00D28DF2 /* NotificationSettingsView.swift */; };
+		EE956CAD2BEFA19A00D28DF2 /* LanguageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CA52BEFA19A00D28DF2 /* LanguageSettingsView.swift */; };
+		EE956CAF2BEFA19A00D28DF2 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CA72BEFA19A00D28DF2 /* AccountSettingsView.swift */; };
+		EE956CB02BEFA19A00D28DF2 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CA82BEFA19A00D28DF2 /* AppearanceSettingsView.swift */; };
+		EE956CB12BEFA19A00D28DF2 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CA92BEFA19A00D28DF2 /* ImagePickerView.swift */; };
+		EE956CB42BEFA1F900D28DF2 /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CB32BEFA1F900D28DF2 /* TaskManager.swift */; };
+		EE956CB92BEFAC8100D28DF2 /* ExpenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CB82BEFAC8100D28DF2 /* ExpenseManager.swift */; };
+		EE956CBB2BEFACAE00D28DF2 /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CBA2BEFACAE00D28DF2 /* ExpenseListView.swift */; };
+		EE956CBD2BEFADDA00D28DF2 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CBC2BEFADDA00D28DF2 /* CalendarView.swift */; };
 		EE984A0E2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE984A0D2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift */; };
 		EE984A102BA0CA8900FCB907 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE984A0F2BA0CA8900FCB907 /* ContentView.swift */; };
 		EE984A122BA0CA8B00FCB907 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE984A112BA0CA8B00FCB907 /* Assets.xcassets */; };
@@ -34,6 +49,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EE956C952BEF682A00D28DF2 /* Login_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_View.swift; sourceTree = "<group>"; };
+		EE956C972BEF832700D28DF2 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		EE956C9B2BEF9C9300D28DF2 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		EE956C9D2BEF9F5600D28DF2 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
+		EE956C9F2BEFA07300D28DF2 /* TaskEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditorView.swift; sourceTree = "<group>"; };
+		EE956CA32BEFA19A00D28DF2 /* AboutAppView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AboutAppView.swift; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/Side_project/Smart_Chat/Smart_Chat/SettingUI/AboutAppView.swift"; sourceTree = "<group>"; };
+		EE956CA42BEFA19A00D28DF2 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationSettingsView.swift; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/Side_project/Smart_Chat/Smart_Chat/SettingUI/NotificationSettingsView.swift"; sourceTree = "<group>"; };
+		EE956CA52BEFA19A00D28DF2 /* LanguageSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LanguageSettingsView.swift; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/Side_project/Smart_Chat/Smart_Chat/SettingUI/LanguageSettingsView.swift"; sourceTree = "<group>"; };
+		EE956CA72BEFA19A00D28DF2 /* AccountSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountSettingsView.swift; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/Side_project/Smart_Chat/Smart_Chat/SettingUI/AccountSettingsView.swift"; sourceTree = "<group>"; };
+		EE956CA82BEFA19A00D28DF2 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppearanceSettingsView.swift; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/Side_project/Smart_Chat/Smart_Chat/SettingUI/AppearanceSettingsView.swift"; sourceTree = "<group>"; };
+		EE956CA92BEFA19A00D28DF2 /* ImagePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagePickerView.swift; path = "../../../../Library/Mobile Documents/com~apple~CloudDocs/Side_project/Smart_Chat/Smart_Chat/SettingUI/ImagePickerView.swift"; sourceTree = "<group>"; };
+		EE956CB32BEFA1F900D28DF2 /* TaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
+		EE956CB82BEFAC8100D28DF2 /* ExpenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseManager.swift; sourceTree = "<group>"; };
+		EE956CBA2BEFACAE00D28DF2 /* ExpenseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListView.swift; sourceTree = "<group>"; };
+		EE956CBC2BEFADDA00D28DF2 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		EE984A0A2BA0CA8900FCB907 /* CSC680 Final Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CSC680 Final Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE984A0D2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSC680_Final_ProjectApp.swift; sourceTree = "<group>"; };
 		EE984A0F2BA0CA8900FCB907 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,6 +101,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE956CA12BEFA17100D28DF2 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				EE956CA32BEFA19A00D28DF2 /* AboutAppView.swift */,
+				EE956CA72BEFA19A00D28DF2 /* AccountSettingsView.swift */,
+				EE956CA82BEFA19A00D28DF2 /* AppearanceSettingsView.swift */,
+				EE956CA92BEFA19A00D28DF2 /* ImagePickerView.swift */,
+				EE956CA52BEFA19A00D28DF2 /* LanguageSettingsView.swift */,
+				EE956CA42BEFA19A00D28DF2 /* NotificationSettingsView.swift */,
+				EE956C9B2BEF9C9300D28DF2 /* SettingView.swift */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
+		EE956CB22BEFA1EA00D28DF2 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				EE956C9D2BEF9F5600D28DF2 /* TaskListView.swift */,
+				EE956C9F2BEFA07300D28DF2 /* TaskEditorView.swift */,
+				EE956CB32BEFA1F900D28DF2 /* TaskManager.swift */,
+			);
+			path = Task;
+			sourceTree = "<group>";
+		};
+		EE956CB52BEFA35A00D28DF2 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				EE956C952BEF682A00D28DF2 /* Login_View.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		EE956CB62BEFA36100D28DF2 /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				EE956C972BEF832700D28DF2 /* RegistrationView.swift */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		EE956CB72BEFAC5300D28DF2 /* Expenses */ = {
+			isa = PBXGroup;
+			children = (
+				EE956CB82BEFAC8100D28DF2 /* ExpenseManager.swift */,
+				EE956CBA2BEFACAE00D28DF2 /* ExpenseListView.swift */,
+			);
+			path = Expenses;
+			sourceTree = "<group>";
+		};
 		EE984A012BA0CA8900FCB907 = {
 			isa = PBXGroup;
 			children = (
@@ -94,10 +173,16 @@
 		EE984A0C2BA0CA8900FCB907 /* CSC680 Final Project */ = {
 			isa = PBXGroup;
 			children = (
+				EE956CB72BEFAC5300D28DF2 /* Expenses */,
+				EE956CB62BEFA36100D28DF2 /* Registration */,
+				EE956CB52BEFA35A00D28DF2 /* Login */,
+				EE956CB22BEFA1EA00D28DF2 /* Task */,
+				EE956CA12BEFA17100D28DF2 /* Setting */,
 				EE984A0D2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift */,
 				EE984A0F2BA0CA8900FCB907 /* ContentView.swift */,
 				EE984A112BA0CA8B00FCB907 /* Assets.xcassets */,
 				EE984A132BA0CA8B00FCB907 /* Preview Content */,
+				EE956CBC2BEFADDA00D28DF2 /* CalendarView.swift */,
 			);
 			path = "CSC680 Final Project";
 			sourceTree = "<group>";
@@ -257,8 +342,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE956CA02BEFA07300D28DF2 /* TaskEditorView.swift in Sources */,
+				EE956CAF2BEFA19A00D28DF2 /* AccountSettingsView.swift in Sources */,
+				EE956CB02BEFA19A00D28DF2 /* AppearanceSettingsView.swift in Sources */,
+				EE956CBD2BEFADDA00D28DF2 /* CalendarView.swift in Sources */,
+				EE956CB12BEFA19A00D28DF2 /* ImagePickerView.swift in Sources */,
 				EE984A102BA0CA8900FCB907 /* ContentView.swift in Sources */,
+				EE956C9C2BEF9C9300D28DF2 /* SettingView.swift in Sources */,
 				EE984A0E2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift in Sources */,
+				EE956CB92BEFAC8100D28DF2 /* ExpenseManager.swift in Sources */,
+				EE956CAC2BEFA19A00D28DF2 /* NotificationSettingsView.swift in Sources */,
+				EE956C962BEF682A00D28DF2 /* Login_View.swift in Sources */,
+				EE956C982BEF832700D28DF2 /* RegistrationView.swift in Sources */,
+				EE956CAD2BEFA19A00D28DF2 /* LanguageSettingsView.swift in Sources */,
+				EE956CB42BEFA1F900D28DF2 /* TaskManager.swift in Sources */,
+				EE956C9E2BEF9F5600D28DF2 /* TaskListView.swift in Sources */,
+				EE956CAB2BEFA19A00D28DF2 /* AboutAppView.swift in Sources */,
+				EE956CBB2BEFACAE00D28DF2 /* ExpenseListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
