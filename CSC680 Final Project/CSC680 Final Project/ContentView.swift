@@ -76,32 +76,6 @@ class TaskManager: ObservableObject {
     }
 }
 
-// MARK: - Expense Manager
-
-class ExpenseManager: ObservableObject {
-    @Published var expenses: [Expense] = []
-    
-    // sample expenses
-    init() {
-        self.expenses = [
-            Expense(amount: 20.0, category: "Groceries", contributors: ["John", "Mary"], date: Date()),
-            Expense(amount: 30.0, category: "Utilities", contributors: ["Alice"], date: Date())
-        ]
-    }
-    
-    func addExpense(expense: Expense) {
-        expenses.append(expense)
-    }
-    
-    func deleteExpense(at indexSet: IndexSet) {
-        expenses.remove(atOffsets: indexSet)
-    }
-    
-    func updateExpense(at index: Int, with expense: Expense) {
-        expenses[index] = expense
-    }
-}
-
 // MARK: - Notice Manager
 
 class NoticeManager: ObservableObject {
@@ -297,112 +271,6 @@ struct LoginView: View {
     }
 }
 
-
-// MARK: - Registration View
-struct RegistrationView: View {
-    @EnvironmentObject var userManager: UserManager
-    @Binding var navigateToRegistration: Bool
-    @State private var username: String = ""
-    @State private var password: String = ""
-    @State private var confirmPassword: String = ""
-    @State private var showAlert: Bool = false
-    @State private var alertMessage: String = ""
-    
-    var body: some View {
-        VStack{
-            Text("   Registration")
-            VStack{
-                TextField("Enter username", text: $username)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(
-                                Color(.black).opacity(0.10)
-                            )
-                    )
-            }
-            .padding()
-            .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
-            VStack {
-                SecureField("Enter password", text: $password)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(
-                                Color(.black).opacity(0.10)
-                            )
-                    )
-            }
-            .padding()
-            .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
-            VStack{
-                SecureField("Confirm password", text: $confirmPassword)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(
-                                Color(.black).opacity(0.10)
-                            )
-                    )
-            }
-            .padding()
-            .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
-            
-            Button(action: register) {
-                Text("Register")
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(width: 372, height: 33)
-                    .background(.black)
-                    .cornerRadius(8)
-            }
-            
-            Button(action: {
-                self.navigateToRegistration = false
-            }) {
-                Text("Cancel")
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(width: 372, height: 33)
-                    .background(.white)
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(.black, lineWidth: 0.50)
-                    )
-            }
-        }
-        .padding()
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-        }
-    }
-    
-    func register() {
-        if username.isEmpty || password.isEmpty || confirmPassword.isEmpty {
-            showAlert = true
-            alertMessage = "Please enter a username, password, and confirm password."
-            return
-        }
-        
-        if password != confirmPassword {
-            showAlert = true
-            alertMessage = "Passwords do not match. Please enter the same password in both fields."
-            return
-        }
-        
-        userManager.register(username: username, password: password)
-        navigateToRegistration = false
-    }
-}
-
-
 // MARK: - Admin Dashboard View
 
 struct AdminDashboardView: View {
@@ -509,38 +377,6 @@ struct TaskListView: View {
     }
 }
 
-
-// MARK: - ExpenseListView - Display Expenses
-
-struct ExpenseListView: View {
-    @ObservedObject var expenseManager: ExpenseManager
-    @State private var isExpenseEditorPresented = false
-    @State private var selectedExpense: Expense?
-    
-    var body: some View {
-        List {
-            ForEach(expenseManager.expenses) { expense in
-                Text("\(expense.amount)")
-                    .onTapGesture {
-                        selectedExpense = expense
-                        isExpenseEditorPresented = true
-                    }
-            }
-            .onDelete(perform: expenseManager.deleteExpense)
-        }
-        .navigationBarTitle("Expenses")
-        .navigationBarItems(trailing:
-            Button(action: {
-                isExpenseEditorPresented = true
-            }) {
-                Image(systemName: "plus")
-            }
-        )
-        .sheet(isPresented: $isExpenseEditorPresented) {
-            ExpenseEditorView(expenseManager: expenseManager, expense: selectedExpense)
-        }
-    }
-}
 
 // MARK: - NoticeListView - Display Notices
 
