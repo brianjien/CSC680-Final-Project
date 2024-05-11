@@ -50,6 +50,33 @@ enum UserRole {
 }
 
 
+<<<<<<< HEAD
+=======
+class TaskManager: ObservableObject {
+    @Published var tasks: [Task] = []
+    
+    // sample tasks
+    init() {
+        self.tasks = [
+            Task(title: "Clean the kitchen", description: "Wipe down all countertops and appliances", frequency: "Daily", assignedTo: "John"),
+            Task(title: "Take out the trash", description: "Empty all trash cans and replace with new bags", frequency: "Daily", assignedTo: "Mary"),
+            Task(title: "Vacuum the living room", description: "Vacuum carpets and rugs", frequency: "Weekly", assignedTo: "Alice")
+        ]
+    }
+    
+    func addTask(task: Task) {
+        tasks.append(task)
+    }
+    
+    func deleteTask(at indexSet: IndexSet) {
+        tasks.remove(atOffsets: indexSet)
+    }
+    
+    func updateTask(at index: Int, with task: Task) {
+        tasks[index] = task
+    }
+}
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 
 // MARK: - Notice Manager
 
@@ -249,6 +276,7 @@ struct NavigationBar: View {
     }
 }
 
+<<<<<<< HEAD
  
 
 struct NavigationBarItem: View {
@@ -283,6 +311,8 @@ struct NavigationBarItem: View {
 
 
 
+=======
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 // MARK: - Admin Dashboard View
 
 struct AdminDashboardView: View {
@@ -349,6 +379,48 @@ struct RegularUserDashboardView: View {
 }
 
 
+<<<<<<< HEAD
+=======
+struct TaskListView: View {
+    @ObservedObject var taskManager: TaskManager
+    @State private var isTaskEditorPresented = false
+    @State private var selectedTask: Task?
+    
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(taskManager.tasks) { task in
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(task.title)
+                            .font(Font.custom("Roboto", size: 16))
+                            .foregroundColor(.black)
+                        Text(task.description)
+                            .font(Font.custom("Roboto", size: 14))
+                            .foregroundColor(Color(red: 0, green: 0, blue: 0).opacity(0.50))
+                    }
+                    .onTapGesture {
+                        selectedTask = task
+                        isTaskEditorPresented = true
+                    }
+                }
+                .onDelete(perform: taskManager.deleteTask)
+            }
+            .navigationBarTitle("Tasks")
+            .navigationBarItems(trailing:
+                Button(action: {
+                    isTaskEditorPresented = true
+                }) {
+                    Image(systemName: "plus")
+                }
+            )
+            .sheet(isPresented: $isTaskEditorPresented) {
+                TaskEditorView(taskManager: taskManager, task: selectedTask)
+            }
+        }
+    }
+}
+
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 
 // MARK: - NoticeListView - Display Notices
 

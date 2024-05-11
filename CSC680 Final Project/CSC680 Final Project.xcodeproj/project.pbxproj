@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+<<<<<<< HEAD
 		EE956C962BEF682A00D28DF2 /* Login_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956C952BEF682A00D28DF2 /* Login_View.swift */; };
 		EE956C982BEF832700D28DF2 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956C972BEF832700D28DF2 /* RegistrationView.swift */; };
 		EE956C9C2BEF9C9300D28DF2 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956C9B2BEF9C9300D28DF2 /* SettingView.swift */; };
@@ -22,6 +23,11 @@
 		EE956CB92BEFAC8100D28DF2 /* ExpenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CB82BEFAC8100D28DF2 /* ExpenseManager.swift */; };
 		EE956CBB2BEFACAE00D28DF2 /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CBA2BEFACAE00D28DF2 /* ExpenseListView.swift */; };
 		EE956CBD2BEFADDA00D28DF2 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CBC2BEFADDA00D28DF2 /* CalendarView.swift */; };
+=======
+		4A8971C62BEFCDCE0032F9D3 /* ExpenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8971C52BEFCDCE0032F9D3 /* ExpenseManager.swift */; };
+		4A8971C82BEFCDF80032F9D3 /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8971C72BEFCDF80032F9D3 /* ExpenseListView.swift */; };
+		4A8971CB2BEFCE530032F9D3 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A8971CA2BEFCE530032F9D3 /* RegistrationView.swift */; };
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 		EE984A0E2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE984A0D2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift */; };
 		EE984A102BA0CA8900FCB907 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE984A0F2BA0CA8900FCB907 /* ContentView.swift */; };
 		EE984A122BA0CA8B00FCB907 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE984A112BA0CA8B00FCB907 /* Assets.xcassets */; };
@@ -49,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+<<<<<<< HEAD
 		EE956C952BEF682A00D28DF2 /* Login_View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_View.swift; sourceTree = "<group>"; };
 		EE956C972BEF832700D28DF2 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		EE956C9B2BEF9C9300D28DF2 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -64,6 +71,11 @@
 		EE956CB82BEFAC8100D28DF2 /* ExpenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseManager.swift; sourceTree = "<group>"; };
 		EE956CBA2BEFACAE00D28DF2 /* ExpenseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListView.swift; sourceTree = "<group>"; };
 		EE956CBC2BEFADDA00D28DF2 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+=======
+		4A8971C52BEFCDCE0032F9D3 /* ExpenseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseManager.swift; sourceTree = "<group>"; };
+		4A8971C72BEFCDF80032F9D3 /* ExpenseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListView.swift; sourceTree = "<group>"; };
+		4A8971CA2BEFCE530032F9D3 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 		EE984A0A2BA0CA8900FCB907 /* CSC680 Final Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CSC680 Final Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE984A0D2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSC680_Final_ProjectApp.swift; sourceTree = "<group>"; };
 		EE984A0F2BA0CA8900FCB907 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -101,6 +113,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+<<<<<<< HEAD
 		EE956CA12BEFA17100D28DF2 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,10 +159,28 @@
 			children = (
 				EE956CB82BEFAC8100D28DF2 /* ExpenseManager.swift */,
 				EE956CBA2BEFACAE00D28DF2 /* ExpenseListView.swift */,
+=======
+		4A8971C42BEFCDB20032F9D3 /* Expenses */ = {
+			isa = PBXGroup;
+			children = (
+				4A8971C52BEFCDCE0032F9D3 /* ExpenseManager.swift */,
+				4A8971C72BEFCDF80032F9D3 /* ExpenseListView.swift */,
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 			);
 			path = Expenses;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
+=======
+		4A8971C92BEFCE410032F9D3 /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				4A8971CA2BEFCE530032F9D3 /* RegistrationView.swift */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 		EE984A012BA0CA8900FCB907 = {
 			isa = PBXGroup;
 			children = (
@@ -173,11 +204,16 @@
 		EE984A0C2BA0CA8900FCB907 /* CSC680 Final Project */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				EE956CB72BEFAC5300D28DF2 /* Expenses */,
 				EE956CB62BEFA36100D28DF2 /* Registration */,
 				EE956CB52BEFA35A00D28DF2 /* Login */,
 				EE956CB22BEFA1EA00D28DF2 /* Task */,
 				EE956CA12BEFA17100D28DF2 /* Setting */,
+=======
+				4A8971C92BEFCE410032F9D3 /* Registration */,
+				4A8971C42BEFCDB20032F9D3 /* Expenses */,
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 				EE984A0D2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift */,
 				EE984A0F2BA0CA8900FCB907 /* ContentView.swift */,
 				EE984A112BA0CA8B00FCB907 /* Assets.xcassets */,
@@ -348,6 +384,7 @@
 				EE956CBD2BEFADDA00D28DF2 /* CalendarView.swift in Sources */,
 				EE956CB12BEFA19A00D28DF2 /* ImagePickerView.swift in Sources */,
 				EE984A102BA0CA8900FCB907 /* ContentView.swift in Sources */,
+<<<<<<< HEAD
 				EE956C9C2BEF9C9300D28DF2 /* SettingView.swift in Sources */,
 				EE984A0E2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift in Sources */,
 				EE956CB92BEFAC8100D28DF2 /* ExpenseManager.swift in Sources */,
@@ -359,6 +396,12 @@
 				EE956C9E2BEF9F5600D28DF2 /* TaskListView.swift in Sources */,
 				EE956CAB2BEFA19A00D28DF2 /* AboutAppView.swift in Sources */,
 				EE956CBB2BEFACAE00D28DF2 /* ExpenseListView.swift in Sources */,
+=======
+				4A8971C62BEFCDCE0032F9D3 /* ExpenseManager.swift in Sources */,
+				EE984A0E2BA0CA8900FCB907 /* CSC680_Final_ProjectApp.swift in Sources */,
+				4A8971C82BEFCDF80032F9D3 /* ExpenseListView.swift in Sources */,
+				4A8971CB2BEFCE530032F9D3 /* RegistrationView.swift in Sources */,
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

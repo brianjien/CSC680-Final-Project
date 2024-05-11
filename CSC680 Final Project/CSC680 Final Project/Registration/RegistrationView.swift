@@ -2,9 +2,14 @@
 //  RegistrationView.swift
 //  CSC680 Final Project
 //
+<<<<<<< HEAD
 //  Created by brianjien on 5/11/24.
 //
 // MARK: - Registration View
+=======
+//  Created by 陳心榆 on 5/11/24.
+//
+>>>>>>> 057177fce9911a81046546483607ed6f1c05b428
 import SwiftUI
 struct RegistrationView: View {
     @EnvironmentObject var userManager: UserManager
