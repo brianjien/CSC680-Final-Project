@@ -161,7 +161,7 @@ struct ContentView: View {
                     .padding(.bottom, 8)
                     .edgesIgnoringSafeArea(.bottom)
                     .background(Color.white)
-                    .accentColor(.blue)
+                    .accentColor(.purple)
                     
                 } else {
                     if navigateToRegistration {
@@ -209,12 +209,12 @@ struct ContentView: View {
 
 struct LogoView: View {
     var body: some View {
-        Image(systemName: "house.fill") // You can replace this with any system image or use SF Symbols
+        Image(systemName: "house.fill")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 32, height: 32) // Adjust size as needed
-            .padding(.leading, 10) // Add left padding to adjust position
-            .foregroundColor(.purple) // Adjust color as needed
+            .frame(width: 32, height: 32)
+            .padding(.leading, 10)
+            .foregroundColor(.purple)
     }
 }
 

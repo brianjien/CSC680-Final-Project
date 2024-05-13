@@ -1,7 +1,4 @@
-
-
 import SwiftUI
-// 修改 TaskEditorView 视图
 
 struct TaskEditorView: View {
     @ObservedObject var taskManager: TaskManager
@@ -31,7 +28,6 @@ struct TaskEditorView: View {
                         taskManager.addTask(task: newTask)
                     }
                     task = nil
-                    // 关闭任务编辑视图
                     taskEditorPresentation.wrappedValue.dismiss()
                 }
             )

@@ -63,14 +63,14 @@ struct RegistrationView: View {
                         self.navigateToRegistration = false
                     }) {
                         Text("Cancel")
-                            .foregroundColor(.black)
+                            .foregroundColor(.blue)
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color.white)
                             .cornerRadius(8)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.black, lineWidth: 1)
+                                    .stroke(Color.blue, lineWidth: 1)
                             )
                             .padding(.horizontal, 40)
                     }

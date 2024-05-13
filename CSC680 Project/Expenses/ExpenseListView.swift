@@ -1,16 +1,10 @@
-//
-//  ExpenseListView.swift
-//  CSC680 Final Project
-//
-
-
 import SwiftUI
 struct ExpenseListView: View {
     @ObservedObject var expenseManager: ExpenseManager
     @State private var isExpenseEditorPresented = false
     @State private var selectedExpense: Expense?
-    @State private var sortBy: SortType = .contributor // 添加排序方式
-    @State private var showSettled = false // 添加用於控制是否顯示已結算費用的狀態屬性
+    @State private var sortBy: SortType = .contributor
+    @State private var showSettled = false
     
     enum SortType {
         case contributor
@@ -21,7 +15,6 @@ struct ExpenseListView: View {
     var body: some View {
         NavigationView {
             List {
-                // 未結算的費用列表
                 Section(header: Text("Unsettled Expenses")) {
                     ForEach(sortedExpenses.filter { !$0.isSettled }) { expense in
                         ExpenseRow(expense: expense) {
@@ -31,7 +24,6 @@ struct ExpenseListView: View {
                     }
                 }
                 
-                // 已結算的費用列表
                 if showSettled {
                     Section(header: Text("Settled Expenses")) {
                         ForEach(sortedExpenses.filter { $0.isSettled }) { expense in
