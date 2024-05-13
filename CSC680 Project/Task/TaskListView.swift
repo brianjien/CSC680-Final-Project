@@ -1,4 +1,8 @@
 import SwiftUI
+
+
+// MARK: - Task List View
+
 struct TaskListView: View {
     @ObservedObject var taskManager: TaskManager
     @State private var isTaskEditorPresented = false
@@ -9,49 +13,67 @@ struct TaskListView: View {
             List {
                 ForEach(taskManager.tasks) { task in
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(task.title)
-                            .font(Font.custom("Roboto", size: 16))
-                            .foregroundColor(.black)
+                        HStack {
+                            Text(task.title)
+                                .font(Font.custom("Roboto", size: 16))
+                                .foregroundColor(.black)
+                            Spacer()
+                            Button(action: {
+                                selectedTask = task
+                                isTaskEditorPresented = true
+                            }) {
+                                Image(systemName: "pencil")
+                                    .font(.title)
+                                    .foregroundColor(.blue)
+                            }
+                        }
                         Text(task.description)
                             .font(Font.custom("Roboto", size: 14))
                             .foregroundColor(Color(red: 0, green: 0, blue: 0).opacity(0.50))
                     }
-                    .onTapGesture {
-                        selectedTask = task
-                        isTaskEditorPresented = true
+                    .listRowBackground(Color.white)
+                }
+                .onDelete { indexSet in
+                    if let index = indexSet.first {
+                        taskManager.deleteTask(taskManager.tasks[index])
                     }
                 }
-                .onDelete(perform: deleteTask)
             }
             .navigationBarTitle("Tasks")
             .navigationBarItems(trailing:
                 Button(action: {
-                    // Create a new task
-                    selectedTask = nil // Set selectedTask to nil to indicate new task
+                    selectedTask = nil
                     isTaskEditorPresented = true
                 }) {
                     Image(systemName: "plus")
                 }
             )
             .sheet(isPresented: $isTaskEditorPresented) {
-                TaskEditorView(taskManager: taskManager, task: $selectedTask) { task in
-                    if selectedTask != nil {
-                        // Editing existing task
-                        if let index = taskManager.tasks.firstIndex(where: { $0.id == task.id }) {
-                            taskManager.tasks[index] = task
-                        }
-                    } else {
-                        // Adding new task
-                        taskManager.addTask(task: task)
-                    }
-                    // Dismiss the sheet
-                    isTaskEditorPresented = false
-                }
+                TaskEditorView(taskManager: taskManager, task: $selectedTask)
             }
         }
     }
+}
 
-    func deleteTask(at offsets: IndexSet) {
-        taskManager.deleteTask(at: offsets)
+
+
+extension Collection {
+    subscript(safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
+
+
+struct TaskRow: View {
+    let task: Task
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(task.title)
+                .font(.headline)
+            Text(task.description)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+        }
     }
 }

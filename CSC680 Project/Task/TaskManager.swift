@@ -6,29 +6,47 @@
 //
 
 import SwiftUI
-
 class TaskManager: ObservableObject {
     @Published var tasks: [Task] = []
-    
-    // sample tasks
+    // 初始化时加载任务列表
     init() {
-        self.tasks = [
-            Task(title: "Clean the kitchen", description: "Wipe down all countertops and appliances", frequency: "Daily", assignedTo: "John"),
-            Task(title: "Take out the trash", description: "Empty all trash cans and replace with new bags", frequency: "Daily", assignedTo: "Mary"),
-            Task(title: "Vacuum the living room", description: "Vacuum carpets and rugs", frequency: "Weekly", assignedTo: "Alice")
-        ]
+        loadTasks()
     }
     
+    // 添加任务
     func addTask(task: Task) {
         tasks.append(task)
+        saveTasks()
     }
     
-    func deleteTask(at indexSet: IndexSet) {
-        tasks.remove(atOffsets: indexSet)
+    // 删除任务
+    func deleteTask(_ task: Task) {
+        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks.remove(at: index)
+            saveTasks()
+        }
     }
     
-    func updateTask(at index: Int, with task: Task) {
-        tasks[index] = task
+    // 更新任务
+    func updateTask(_ task: Task, with updatedTask: Task) {
+        if let index = tasks.firstIndex(where: { $0.id == task.id }) {
+            tasks[index] = updatedTask
+            saveTasks()
+        }
+    }
+    
+    // 保存任务列表到 UserDefaults
+    private func saveTasks() {
+        if let encodedData = try? JSONEncoder().encode(tasks) {
+            UserDefaults.standard.set(encodedData, forKey: "tasks")
+        }
+    }
+    
+    // 从 UserDefaults 加载任务列表
+    private func loadTasks() {
+        if let tasksData = UserDefaults.standard.data(forKey: "tasks"),
+           let decodedTasks = try? JSONDecoder().decode([Task].self, from: tasksData) {
+            self.tasks = decodedTasks
+        }
     }
 }
-

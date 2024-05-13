@@ -1,10 +1,5 @@
-//
-//  RegistrationView.swift
-//  CSC680 Final Project
-//
-
-
 import SwiftUI
+
 struct RegistrationView: View {
     @EnvironmentObject var userManager: UserManager
     @Binding var navigateToRegistration: Bool
@@ -15,80 +10,79 @@ struct RegistrationView: View {
     @State private var alertMessage: String = ""
     
     var body: some View {
-        VStack{
-            Text("   Registration")
-            VStack{
-                TextField("Enter username", text: $username)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(
-                                Color(.black).opacity(0.10)
+            ZStack {
+                Color.white.edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Spacer()
+                    
+                    Text("Registration")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .padding()
+                    
+                    Image(systemName: "person.badge.plus")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 100)
+                        .padding(.bottom, 30)
+                    
+                    VStack(spacing: 20) {
+                        TextField("Username", text: $username)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(8)
+                            .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
+                        
+                        SecureField("Password", text: $password)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(8)
+                            .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
+                        
+                        SecureField("Confirm Password", text: $confirmPassword)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(8)
+                            .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
+                    }
+                    .padding(.horizontal, 40)
+                    
+                    Button(action: register) {
+                        Text("Register")
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                            .padding(.horizontal, 40)
+                    }
+                    .disabled(username.isEmpty || password.isEmpty || confirmPassword.isEmpty)
+                    
+                    Button(action: {
+                        self.navigateToRegistration = false
+                    }) {
+                        Text("Cancel")
+                            .foregroundColor(.black)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white)
+                            .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.black, lineWidth: 1)
                             )
-                    )
+                            .padding(.horizontal, 40)
+                    }
+                    
+                    Spacer()
+                }
             }
             .padding()
-            .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
-            VStack {
-                SecureField("Enter password", text: $password)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(
-                                Color(.black).opacity(0.10)
-                            )
-                    )
-            }
-            .padding()
-            .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
-            VStack{
-                SecureField("Confirm password", text: $confirmPassword)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(
-                                Color(.black).opacity(0.10)
-                            )
-                    )
-            }
-            .padding()
-            .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
-            
-            Button(action: register) {
-                Text("Register")
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(width: 372, height: 33)
-                    .background(.black)
-                    .cornerRadius(8)
-            }
-            
-            Button(action: {
-                self.navigateToRegistration = false
-            }) {
-                Text("Cancel")
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(width: 372, height: 33)
-                    .background(.white)
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(.black, lineWidth: 0.50)
-                    )
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
         }
-        .padding()
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-        }
-    }
     
     func register() {
         if username.isEmpty || password.isEmpty || confirmPassword.isEmpty {
@@ -107,5 +101,3 @@ struct RegistrationView: View {
         navigateToRegistration = false
     }
 }
-
-

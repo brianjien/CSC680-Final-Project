@@ -1,40 +1,50 @@
 
 
 import SwiftUI
-
-
-
+// 修改 TaskEditorView 视图
 
 struct TaskEditorView: View {
     @ObservedObject var taskManager: TaskManager
     @Binding var task: Task?
-    let onSave: (Task) -> Void
-
-    @State private var editedTask: Task
-
-    init(taskManager: TaskManager, task: Binding<Task?>, onSave: @escaping (Task) -> Void) {
-        self.taskManager = taskManager
-        self._task = task
-        self._editedTask = State(initialValue: task.wrappedValue ?? Task(title: "", description: "", frequency: "", assignedTo: ""))
-        self.onSave = onSave
-    }
+    @State private var title: String = ""
+    @State private var description: String = ""
+    @State private var frequency: String = ""
+    @State private var assignedTo: String = ""
 
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Task Details")) {
-                    TextField("Title", text: $editedTask.title)
-                    TextField("Description", text: $editedTask.description)
-                    TextField("Frequency", text: $editedTask.frequency)
-                    TextField("Assigned To", text: $editedTask.assignedTo)
+                    TextField("Title", text: $title)
+                    TextField("Description", text: $description)
+                    TextField("Frequency", text: $frequency)
+                    TextField("Assigned To", text: $assignedTo)
                 }
             }
             .navigationBarTitle(task != nil ? "Edit Task" : "New Task")
             .navigationBarItems(trailing:
                 Button("Save") {
-                    onSave(editedTask)
+                    let newTask = Task(title: title, description: description, frequency: frequency, assignedTo: assignedTo)
+                    if let task = task {
+                        taskManager.updateTask(task, with: newTask)
+                    } else {
+                        taskManager.addTask(task: newTask)
+                    }
+                    task = nil
+                    // 关闭任务编辑视图
+                    taskEditorPresentation.wrappedValue.dismiss()
                 }
             )
+            .onAppear {
+                if let task = task {
+                    title = task.title
+                    description = task.description
+                    frequency = task.frequency
+                    assignedTo = task.assignedTo
+                }
+            }
         }
     }
+
+    @Environment(\.presentationMode) private var taskEditorPresentation
 }

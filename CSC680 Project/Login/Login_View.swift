@@ -1,85 +1,91 @@
 import SwiftUI
+
 struct LoginView: View {
     @EnvironmentObject var userManager: UserManager
     @Binding var navigateToRegistration: Bool
+    var onLoginSuccess: () -> Void
+    
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    var onLoginSuccess: () -> Void // Add this closure
-
+    
     var body: some View {
-        VStack(spacing: 12) {
-            Text("Login")
-            // Username input
-            TextField("Enter username", text: $username)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .cornerRadius(6)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color(.black).opacity(0.1))
-                )
-            // Password input
-            SecureField("Enter password", text: $password)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .cornerRadius(6)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color(.black).opacity(0.1))
-                )
-            // Login button
-            Button(action: {
-                login(username: username, password: password) // Call login function with parameters
-            }) {
-                Text("Login")
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(width: 372, height: 33)
-                    .background(Color.black)
-                    .cornerRadius(8)
-            }
-            // Cancel button
-            Button(action: {}) {
-                Text("Cancel")
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(width: 372, height: 33)
-                    .background(Color.white)
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.black, lineWidth: 0.50)
-                    )
-            }
-            // Sign up link
-            Text("Need an account? Sign up here!")
-                .underline()
-                .foregroundColor(.black)
-                .onTapGesture {
-                    navigateToRegistration = true
+        ZStack {
+            Color.white.edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Spacer()
+                
+                Text("Welcome!")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.bottom, 20)
+                
+                Image(systemName: "house.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+                    .padding(.bottom, 30)
+                
+                VStack(spacing: 20) {
+                    TextField("Username", text: $username)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(8)
+                        .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
+                    
+                    SecureField("Password", text: $password)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(8)
+                        .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
+                    
                 }
+                .padding(.horizontal, 40)
+                
+                Button(action: {
+                    login(username: username, password: password)
+                }) {
+                    Text("Login")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                        .padding(.horizontal, 40)
+                }
+                .disabled(username.isEmpty || password.isEmpty)
+                
+                Spacer()
+                
+                HStack {
+                    Text("Don't have an account?")
+                    
+                    Button(action: {
+                        navigateToRegistration = true
+                    }) {
+                        Text("Sign Up")
+                            .foregroundColor(.blue)
+                            .fontWeight(.bold)
+                    }
+                }
+                .padding(.bottom, 20)
+            }
         }
-        .padding(EdgeInsets(top: 0, leading: 0, bottom: 12, trailing: 0))
-        .frame(width: 382, height: 483)
-        .background(Color.white)
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
     func login(username: String, password: String) {
-        if let user = userManager.registeredUsers.first(where: { $0.username == username && $0.password == password }) {
-            print("Pass")
-            userManager.isLoggedIn = true
-            userManager.currentUser = user
-            onLoginSuccess() // Call the closure upon successful login
-        } else {
-            print("Invalid username or password")
-            // Set showAlert to true if login fails
-            showAlert = true
-            alertMessage = "Invalid username or password."
+            if let user = userManager.registeredUsers.first(where: { $0.username == username && $0.password == password }) {
+                userManager.isLoggedIn = true
+                userManager.currentUser = user
+                onLoginSuccess()
+            } else {
+                showAlert = true
+                alertMessage = "Invalid username or password."
+            }
         }
-    }
 }

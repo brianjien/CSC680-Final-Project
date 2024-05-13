@@ -2,29 +2,29 @@ import SwiftUI
 
 // MARK: - Models
 
-struct Task: Identifiable, Equatable {
+struct Task: Identifiable, Codable {
     var id = UUID()
     var title: String
     var description: String
     var frequency: String
     var assignedTo: String
-    
-    static func == (lhs: Task, rhs: Task) -> Bool {
-        return lhs.id == rhs.id
-    }
+}
+enum TaskStatus {
+    case pending
+    case inProgress
+    case completed
 }
 
-struct Expense: Identifiable, Equatable {
+
+struct Expense: Identifiable, Equatable, Codable {
     var id = UUID()
     var amount: Double
     var category: String
     var contributors: [String]
     var date: Date
-    
-    static func == (lhs: Expense, rhs: Expense) -> Bool {
-        return lhs.id == rhs.id
-    }
+    var isSettled: Bool
 }
+
 
 struct Notice: Identifiable, Equatable {
     var id = UUID()
@@ -49,6 +49,12 @@ enum UserRole {
     case regular
 }
 
+enum Tab {
+    case home
+    case chores
+    case schedule
+    case settings
+}
 
 
 
@@ -124,68 +130,43 @@ class UserManager: ObservableObject {
 
 // MARK: - ContentView - Main User Interface
 
+
 struct ContentView: View {
     @EnvironmentObject var userManager: UserManager
     @State private var navigateToRegistration: Bool = false
     @State private var isLoggedIn: Bool = false
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-
+    
     var body: some View {
         NavigationView {
             VStack {
                 if isLoggedIn {
-                    NavigationLink(destination: TaskListView(taskManager: TaskManager())) {
-                        Text("Tasks")
-                            .frame(maxWidth: .infinity, maxHeight: 200)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(20)
-                            .padding(.horizontal)
-                    }
-                    NavigationLink(destination: ExpenseListView(expenseManager: ExpenseManager())) {
-                        Text("Expenses")
-                            .frame(maxWidth: .infinity, maxHeight: 200)
-                            .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                    }
-                    NavigationLink(destination: NoticeListView(noticeManager: NoticeManager())) {
-                        Text("Notices")
-                            .frame(maxWidth: .infinity, maxHeight: 200)
-                            .padding()
-                            .background(Color.orange)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                    }
-                    Button("Logout") {
-                        userManager.logout()
-                        isLoggedIn = false
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(Color.red)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                    .padding(.top, 10)
-                    
                     TabView {
-                        NavigationBar()
+                        TaskListView(taskManager: TaskManager())
+                            .tabItem {
+                                Label("Tasks", systemImage: "list.bullet")
+                            }
+                        
+                        ExpenseListView(expenseManager: ExpenseManager())
+                            .tabItem {
+                                Label("Expenses", systemImage: "square.and.pencil")
+                            }
+                        
+                        NoticeListView(noticeManager: NoticeManager())
+                            .tabItem {
+                                Label("Notices", systemImage: "megaphone")
+                            }
                     }
-                    .frame(height: 70)
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-                    .padding([.leading, .trailing])
-                    .shadow(radius: 5)
                     .padding(.bottom, 8)
+                    .edgesIgnoringSafeArea(.bottom)
+                    .background(Color.white)
+                    .accentColor(.blue)
+                    
                 } else {
                     if navigateToRegistration {
                         RegistrationView(navigateToRegistration: $navigateToRegistration)
+                            .navigationBarHidden(true)
                     } else {
                         LoginView(navigateToRegistration: $navigateToRegistration, onLoginSuccess: {
                             self.isLoggedIn = true
@@ -193,8 +174,6 @@ struct ContentView: View {
                         .padding()
                     }
                 }
-                
-                Spacer()
             }
             .onReceive(userManager.$isLoggedIn) { loggedIn in
                 if loggedIn {
@@ -204,259 +183,339 @@ struct ContentView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
-            .navigationBarTitle("Chore Assigner App")
+            .navigationBarTitle("Chore Assigner App", displayMode: .inline)
+            .navigationBarItems(leading: LogoView(),
+                                 trailing:
+                                    Group {
+                                        if isLoggedIn {
+                                            Button(action: {
+                                                userManager.logout()
+                                                isLoggedIn = false
+                                            }) {
+                                                Image(systemName: "person.crop.circle.fill.badge.minus")
+                                                    .foregroundColor(.red)
+                                                    .padding(6)
+                                                    .background(Color.white)
+                                                    .clipShape(Circle())
+                                                    .shadow(radius: 4)
+                                            }
+                                        }
+                                    }
+            )
         }
+        .navigationViewStyle(StackNavigationViewStyle())
+    }
+}
+
+struct LogoView: View {
+    var body: some View {
+        Image(systemName: "house.fill") // You can replace this with any system image or use SF Symbols
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 32, height: 32) // Adjust size as needed
+            .padding(.leading, 10) // Add left padding to adjust position
+            .foregroundColor(.purple) // Adjust color as needed
     }
 }
 
 
-struct NavigationBar: View {
-    @State private var selectedTab: Tab = .home
-
-    enum Tab {
-        case home, chores, schedule, settings
-    }
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            Spacer()
-            NavigationBarItem(imageName: "house.fill", title: "Home", tab: .home, isSelected: selectedTab == .home, action: {
-                selectedTab = .home
-            })
-            Spacer()
-            NavigationBarItem(imageName: "list.bullet", title: "Chores", tab: .chores, isSelected: selectedTab == .chores, action: {
-                selectedTab = .chores
-            })
-            Spacer()
-            NavigationLink(destination: CalendarView(), isActive: Binding.constant(selectedTab == .schedule)) {
-                NavigationBarItem(imageName: "calendar", title: "Calendar", tab: .schedule, isSelected: selectedTab == .schedule, action: {
-                    selectedTab = .schedule
+    struct NavigationBar: View {
+        @State private var selectedTab: Tab = .home
+        
+        enum Tab {
+            case home, chores, schedule, settings
+        }
+        
+        var body: some View {
+            HStack(alignment: .top, spacing: 8) {
+                Spacer()
+                NavigationBarItem(imageName: "house.fill", title: "Home", tab: .home, isSelected: selectedTab == .home, action: {
+                    selectedTab = .home
                 })
-            }
-            Spacer()
-            
-            NavigationBarItem(imageName: "gear", title: "Settings", tab: .settings, isSelected: selectedTab == .settings, action: {
-                selectedTab = .settings
-            })
-            Spacer()
-        }
-        .padding(.top, 68)
-        .padding(.bottom, 12)
-        .background(Color.white)
-        .overlay(
-            RoundedRectangle(cornerRadius: 0.50)
-                .stroke(Color(red: 0.96, green: 0.94, blue: 0.90), lineWidth: 0.50)
-        )
-    }
-}
-
-
- 
-
-struct NavigationBarItem: View {
-    let imageName: String
-    let title: String
-    let tab: NavigationBar.Tab
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 6) {
-                Image(systemName: imageName)
-                    .font(.system(size: 20))
-                    .foregroundColor(isSelected ? Color(red: 0.11, green: 0.09, blue: 0.05) : Color(red: 0.64, green: 0.51, blue: 0.29))
-                Text(title)
-                    .font(Font.custom("Lexend", size: 12).weight(.medium))
-                    .lineSpacing(16)
-                    .foregroundColor(isSelected ? Color(red: 0.11, green: 0.09, blue: 0.05) : Color(red: 0.64, green: 0.51, blue: 0.29))
-            }
-            .frame(maxWidth: .infinity, minHeight: 59, maxHeight: 69)
-            .background(isSelected ? Color(red: 0.96, green: 0.94, blue: 0.90) : Color.clear) // Highlight selected tab
-            .cornerRadius(8)
-        }
-        .padding(.horizontal, 8)
-    }
-}
-
-
-
-
-
-
-
-// MARK: - Admin Dashboard View
-
-struct AdminDashboardView: View {
-    @EnvironmentObject var taskManager: TaskManager
-    @EnvironmentObject var expenseManager: ExpenseManager
-    @EnvironmentObject var noticeManager: NoticeManager
-    
-    @State private var isTaskEditorPresented = false
-    @State private var isExpenseEditorPresented = false
-    @State private var isNoticeEditorPresented = false
-    
-    var body: some View {
-        NavigationView {
-            VStack {
-                Button("View Tasks") {
-                    isTaskEditorPresented = true
-                }
-                .padding()
-                .sheet(isPresented: $isTaskEditorPresented) {
-                    TaskListView(taskManager: taskManager)
-                }
+                Spacer()
+                NavigationBarItem(imageName: "list.bullet", title: "Chores", tab: .chores, isSelected: selectedTab == .chores, action: {
+                    selectedTab = .chores
+                })
+                Spacer()
                 
-                Button("View Expenses") {
-                    isExpenseEditorPresented = true
-                }
-                .padding()
-                .sheet(isPresented: $isExpenseEditorPresented) {
-                    ExpenseListView(expenseManager: expenseManager)
-                }
-                
-                Button("View Notices") {
-                    isNoticeEditorPresented = true
-                }
-                .padding()
-                .sheet(isPresented: $isNoticeEditorPresented) {
-                    NoticeListView(noticeManager: noticeManager)
-                }
-                
+                NavigationBarItem(imageName: "gear", title: "Settings", tab: .settings, isSelected: selectedTab == .settings, action: {
+                    selectedTab = .settings
+                })
                 Spacer()
             }
-            .navigationBarTitle("Admin Dashboard")
+            .padding(.top, 68)
+            .padding(.bottom, 12)
+            .background(Color.white)
+            .overlay(
+                RoundedRectangle(cornerRadius: 0.50)
+                    .stroke(Color(red: 0.96, green: 0.94, blue: 0.90), lineWidth: 0.50)
+            )
         }
     }
-}
-
-// MARK: - Regular User Dashboard View
-
-struct RegularUserDashboardView: View {
-    @EnvironmentObject var noticeManager: NoticeManager
     
-    var body: some View {
-        NavigationView {
-            VStack {
-                Button("View Notices") {
-                    //
+    
+    
+    struct NavigationBarItem: View {
+        let imageName: String
+        let title: String
+        let tab: NavigationBar.Tab
+        let isSelected: Bool
+        let action: () -> Void
+        
+        var body: some View {
+            Button(action: action) {
+                VStack(spacing: 6) {
+                    Image(systemName: imageName)
+                        .font(.system(size: 20))
+                        .foregroundColor(isSelected ? Color(red: 0.11, green: 0.09, blue: 0.05) : Color(red: 0.64, green: 0.51, blue: 0.29))
+                    Text(title)
+                        .font(Font.custom("Lexend", size: 12).weight(.medium))
+                        .lineSpacing(16)
+                        .foregroundColor(isSelected ? Color(red: 0.11, green: 0.09, blue: 0.05) : Color(red: 0.64, green: 0.51, blue: 0.29))
                 }
-                .padding()
-                
-                Spacer()
+                .frame(maxWidth: .infinity, minHeight: 59, maxHeight: 69)
+                .background(isSelected ? Color(red: 0.96, green: 0.94, blue: 0.90) : Color.clear)
+                .cornerRadius(8)
             }
-            .navigationBarTitle("User Dashboard")
+            .padding(.horizontal, 8)
         }
     }
-}
-
-
-
-struct NoticeListView: View {
-    @ObservedObject var noticeManager: NoticeManager
-    @State private var isNoticeEditorPresented = false
-    @State private var selectedNotice: Notice?
     
-    var body: some View {
-        List {
-            ForEach(noticeManager.notices) { notice in
-                Text(notice.title)
-                    .onTapGesture {
-                        selectedNotice = notice
+    
+    
+    // MARK: - Admin Dashboard View
+    
+    struct AdminDashboardView: View {
+        @EnvironmentObject var taskManager: TaskManager
+        @EnvironmentObject var expenseManager: ExpenseManager
+        @EnvironmentObject var noticeManager: NoticeManager
+        
+        @State private var isTaskEditorPresented = false
+        @State private var isExpenseEditorPresented = false
+        @State private var isNoticeEditorPresented = false
+        
+        var body: some View {
+            NavigationView {
+                VStack {
+                    Button("View Tasks") {
+                        isTaskEditorPresented = true
+                    }
+                    .padding()
+                    .sheet(isPresented: $isTaskEditorPresented) {
+                        TaskListView(taskManager: taskManager)
+                    }
+                    
+                    Button("View Expenses") {
+                        isExpenseEditorPresented = true
+                    }
+                    .padding()
+                    .sheet(isPresented: $isExpenseEditorPresented) {
+                        ExpenseListView(expenseManager: expenseManager)
+                    }
+                    
+                    Button("View Notices") {
                         isNoticeEditorPresented = true
                     }
+                    .padding()
+                    .sheet(isPresented: $isNoticeEditorPresented) {
+                        NoticeListView(noticeManager: noticeManager)
+                    }
+                    
+                    Spacer()
+                }
+                .navigationBarTitle("Admin Dashboard")
             }
-            .onDelete(perform: noticeManager.deleteNotice)
         }
-        .navigationBarTitle("Notices")
-        .navigationBarItems(trailing:
-            Button(action: {
+    }
+    
+    // MARK: - Regular User Dashboard View
+    
+    struct RegularUserDashboardView: View {
+        @EnvironmentObject var noticeManager: NoticeManager
+        
+        var body: some View {
+            NavigationView {
+                VStack {
+                    Button("View Notices") {
+                        //
+                    }
+                    .padding()
+                    
+                    Spacer()
+                }
+                .navigationBarTitle("User Dashboard")
+            }
+        }
+    }
+    
+    
+    
+    struct NoticeListView: View {
+        @ObservedObject var noticeManager: NoticeManager
+        @State private var isNoticeEditorPresented = false
+        @State private var selectedNotice: Notice?
+        
+        var body: some View {
+            List {
+                ForEach(noticeManager.notices) { notice in
+                    Text(notice.title)
+                        .onTapGesture {
+                            selectedNotice = notice
+                            isNoticeEditorPresented = true
+                        }
+                }
+                .onDelete(perform: noticeManager.deleteNotice)
+            }
+            .navigationBarTitle("Notices")
+            .navigationBarItems(trailing:
+                                    Button(action: {
                 isNoticeEditorPresented=true
             }) {
                 Image(systemName: "plus")
             }
-        )
-        .sheet(isPresented: $isNoticeEditorPresented) {
-            NoticeEditorView(noticeManager: noticeManager, notice: selectedNotice)
-        }
-    }
-}
-
-
-
-
-
-// MARK: - Expense Editor View
-
-struct ExpenseEditorView: View {
-    @ObservedObject var expenseManager: ExpenseManager
-    var expense: Expense?
-    
-    @State private var amount: String = ""
-    @State private var category: String = ""
-    @State private var contributors: String = ""
-    @State private var date: Date = Date()
-    
-    var body: some View {
-        Form {
-            TextField("Amount", text: $amount)
-                .keyboardType(.decimalPad)
-            TextField("Category", text: $category)
-            TextField("Contributors", text: $contributors)
-            DatePicker("Date", selection: $date, displayedComponents: .date)
-        }
-        .onAppear {
-            if let expense = expense {
-                amount = "\(expense.amount)"
-                category = expense.category
-                contributors = expense.contributors.joined(separator: ", ")
-                date = expense.date
+            )
+            .sheet(isPresented: $isNoticeEditorPresented) {
+                NoticeEditorView(noticeManager: noticeManager, notice: selectedNotice)
             }
         }
-        .navigationBarTitle(expense != nil ? "Edit Expense" : "Add Expense")
-        .navigationBarItems(trailing:
-            Button("Save") {
-                let contributorsArray = contributors.components(separatedBy: ",")
-                let updatedExpense = Expense(amount: Double(amount) ?? 0.0, category: category, contributors: contributorsArray, date: date)
+    }
+    
+    
+    
+    
+    
+    // MARK: - Expense Editor View
+    struct ExpenseEditorView: View {
+        @ObservedObject var expenseManager: ExpenseManager
+        @Binding var isPresented: Bool // 將編輯頁面的顯示狀態綁定到外部
+        
+        var expense: Expense?
+        
+        @State private var amount: String = ""
+        @State private var category: String = ""
+        @State private var contributors: String = ""
+        @State private var date: Date = Date()
+        @State private var isSettled: Bool = false
+        @State private var isSaving: Bool = false
+        
+        var body: some View {
+            Form {
+                TextField("Amount", text: $amount)
+                    .keyboardType(.decimalPad)
+                TextField("Category", text: $category)
+                TextField("Contributors", text: $contributors)
+                DatePicker("Date", selection: $date, displayedComponents: .date)
+                Toggle("Settled", isOn: $isSettled)
+                
+                Button(action: {
+                    isSaving = true
+                    saveExpense()
+                }) {
+                    Text("Save")
+                }
+                .disabled(isSaving)
+            }
+            .onAppear {
                 if let expense = expense {
-                    expenseManager.updateExpense(at: expenseManager.expenses.firstIndex(of: expense)!, with: updatedExpense)
-                } else {
-                    expenseManager.addExpense(expense: updatedExpense)
+                    amount = "\(expense.amount)"
+                    category = expense.category
+                    contributors = expense.contributors.joined(separator: ", ")
+                    date = expense.date
+                    isSettled = expense.isSettled
                 }
             }
-        )
-    }
-}
-
-// MARK: - Notice Editor View
-
-struct NoticeEditorView: View {
-    @ObservedObject var noticeManager: NoticeManager
-    var notice: Notice?
-    
-    @State private var title: String = ""
-    @State private var content: String = ""
-    @State private var postedBy: String = ""
-    @State private var date: Date = Date()
-    
-    var body: some View {
-        Form {
-            TextField("Title", text: $title)
-            TextField("Content", text: $content)
-            TextField("Posted By", text: $postedBy)
-            DatePicker("Date", selection: $date, displayedComponents: .date)
+            .navigationBarTitle(expense != nil ? "Edit Expense" : "Add Expense")
         }
-        .onAppear {
-            if let notice = notice {
-                title = notice.title
-                content = notice.content
-                postedBy = notice.postedBy
-                date = notice.date
+        
+        private func saveExpense() {
+            let contributorsArray = contributors.components(separatedBy: ",")
+            let updatedExpense = Expense(amount: Double(amount) ?? 0.0, category: category, contributors: contributorsArray, date: date, isSettled: isSettled)
+            if let expense = expense {
+                expenseManager.updateExpense(at: expenseManager.expenses.firstIndex(of: expense)!, with: updatedExpense)
+            } else {
+                expenseManager.addExpense(expense: updatedExpense)
+            }
+            
+            expenseManager.saveExpenses()
+            
+            isSaving = false
+            isPresented = false // 在保存後關閉編輯頁面
+        }
+    }
+    
+    
+    
+    struct ExpenseRow: View {
+        var expense: Expense
+        var onEdit: () -> Void // 添加 onEdit 闭包
+        
+        var body: some View {
+            HStack {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Amount: \(expense.amount)")
+                        .font(.headline)
+                    Text("Category: \(expense.category)")
+                        .font(.subheadline)
+                    Text("Contributors: \(expense.contributors.joined(separator: ", "))")
+                        .font(.subheadline)
+                    Text("Date: \(expense.date, formatter: dateFormatter)")
+                        .font(.subheadline)
+                }
+                .padding(.vertical)
+                
+                Spacer()
+                
+                Button(action: {
+                    onEdit() // 点击编辑按钮时调用 onEdit 闭包
+                }) {
+                    Image(systemName: "square.and.pencil")
+                        .foregroundColor(.blue)
+                }
             }
         }
-        .navigationBarTitle(notice != nil ? "Edit Notice" : "Add Notice")
-        .navigationBarItems(trailing:
-            Button("Save") {
+        
+        private let dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .short
+            formatter.timeStyle = .none
+            return formatter
+        }()
+    }
+    
+    
+    
+    
+    
+    
+    // MARK: - Notice Editor View
+    
+    struct NoticeEditorView: View {
+        @ObservedObject var noticeManager: NoticeManager
+        var notice: Notice?
+        
+        @State private var title: String = ""
+        @State private var content: String = ""
+        @State private var postedBy: String = ""
+        @State private var date: Date = Date()
+        
+        var body: some View {
+            Form {
+                TextField("Title", text: $title)
+                TextField("Content", text: $content)
+                TextField("Posted By", text: $postedBy)
+                DatePicker("Date", selection: $date, displayedComponents: .date)
+            }
+            .onAppear {
+                if let notice = notice {
+                    title = notice.title
+                    content = notice.content
+                    postedBy = notice.postedBy
+                    date = notice.date
+                }
+            }
+            .navigationBarTitle(notice != nil ? "Edit Notice" : "Add Notice")
+            .navigationBarItems(trailing:
+                                    Button("Save") {
                 let updatedNotice = Notice(title: title, content: content, postedBy: postedBy, date: date)
                 if let notice = notice {
                     noticeManager.updateNotice(at: noticeManager.notices.firstIndex(of: notice)!, with: updatedNotice)
@@ -464,11 +523,12 @@ struct NoticeEditorView: View {
                     noticeManager.addNotice(notice: updatedNotice)
                 }
             }
-        )
+            )
+        }
     }
-}
+    
+    #Preview{
+        ContentView()
+            .environmentObject(UserManager())
+    }
 
-#Preview{
-    ContentView()
-        .environmentObject(UserManager())
-}
