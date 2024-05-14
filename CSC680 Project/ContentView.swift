@@ -444,7 +444,7 @@ struct ChoresAssignerView: View {
 
         if let task = assignedTask {
             assignedTasks.append(AssignedTask(task: task, assignedTo: assignedToName))
-            taskManager.removeTask(withId: task.id) 
+            taskManager.removeTask(withId: task.id)
         }
         assignedTask = nil
     }
