@@ -25,17 +25,22 @@ struct Expense: Identifiable, Equatable, Codable {
     var isSettled: Bool
 }
 
-
-struct Notice: Identifiable, Equatable {
+struct Memo: Identifiable, Equatable, Codable {
     var id = UUID()
     var title: String
     var content: String
-    var postedBy: String
     var date: Date
+    var checklistItems: [ChecklistItem] // New property for checklist items
     
-    static func == (lhs: Notice, rhs: Notice) -> Bool {
+    static func == (lhs: Memo, rhs: Memo) -> Bool {
         return lhs.id == rhs.id
     }
+}
+
+struct ChecklistItem: Identifiable, Equatable, Codable {
+    var id = UUID()
+    var title: String
+    var isChecked: Bool
 }
 
 struct User {
@@ -57,32 +62,6 @@ enum Tab {
 }
 
 
-
-// MARK: - Notice Manager
-
-class NoticeManager: ObservableObject {
-    @Published var notices: [Notice] = []
-    
-    // sample notices
-    init() {
-        self.notices = [
-            Notice(title: "Important Announcement", content: "Please remember to clean up after yourselves in the kitchen!", postedBy: "Admin", date: Date()),
-            Notice(title: "Upcoming Event", content: "Our monthly house meeting will be held this Saturday at 10 AM.", postedBy: "Admin", date: Date())
-        ]
-    }
-    
-    func addNotice(notice: Notice) {
-        notices.append(notice)
-    }
-    
-    func deleteNotice(at indexSet: IndexSet) {
-        notices.remove(atOffsets: indexSet)
-    }
-    
-    func updateNotice(at index: Int, with notice: Notice) {
-        notices[index] = notice
-    }
-}
 
 // MARK: - User Manager
 class UserManager: ObservableObject {
@@ -131,13 +110,15 @@ class UserManager: ObservableObject {
 // MARK: - ContentView - Main User Interface
 
 
+
 struct ContentView: View {
     @EnvironmentObject var userManager: UserManager
     @State private var navigateToRegistration: Bool = false
     @State private var isLoggedIn: Bool = false
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    
+    @State private var isLoading: Bool = false // Add loading state
+
     var body: some View {
         NavigationView {
             VStack {
@@ -153,10 +134,7 @@ struct ContentView: View {
                                 Label("Expenses", systemImage: "square.and.pencil")
                             }
                         
-                        NoticeListView(noticeManager: NoticeManager())
-                            .tabItem {
-                                Label("Notices", systemImage: "megaphone")
-                            }
+                        
                     }
                     .padding(.bottom, 8)
                     .edgesIgnoringSafeArea(.bottom)
@@ -202,11 +180,27 @@ struct ContentView: View {
                                         }
                                     }
             )
+            .overlay(
+                // Loading indicator
+                Group {
+                    if isLoading {
+                        LoadingIndicator()
+                    }
+                }
+            )
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }
-
+struct LoadingIndicator: View {
+    var body: some View {
+        ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+            .background(Color.white) // Ensure the background color is set to white
+            .cornerRadius(10)
+            .shadow(radius: 5)
+    }
+}
 struct LogoView: View {
     var body: some View {
         Image(systemName: "house.fill")
@@ -288,7 +282,6 @@ struct LogoView: View {
     struct AdminDashboardView: View {
         @EnvironmentObject var taskManager: TaskManager
         @EnvironmentObject var expenseManager: ExpenseManager
-        @EnvironmentObject var noticeManager: NoticeManager
         
         @State private var isTaskEditorPresented = false
         @State private var isExpenseEditorPresented = false
@@ -313,14 +306,7 @@ struct LogoView: View {
                         ExpenseListView(expenseManager: expenseManager)
                     }
                     
-                    Button("View Notices") {
-                        isNoticeEditorPresented = true
-                    }
-                    .padding()
-                    .sheet(isPresented: $isNoticeEditorPresented) {
-                        NoticeListView(noticeManager: noticeManager)
-                    }
-                    
+                   
                     Spacer()
                 }
                 .navigationBarTitle("Admin Dashboard")
@@ -331,7 +317,6 @@ struct LogoView: View {
     // MARK: - Regular User Dashboard View
     
     struct RegularUserDashboardView: View {
-        @EnvironmentObject var noticeManager: NoticeManager
         
         var body: some View {
             NavigationView {
@@ -350,44 +335,13 @@ struct LogoView: View {
     
     
     
-    struct NoticeListView: View {
-        @ObservedObject var noticeManager: NoticeManager
-        @State private var isNoticeEditorPresented = false
-        @State private var selectedNotice: Notice?
-        
-        var body: some View {
-            List {
-                ForEach(noticeManager.notices) { notice in
-                    Text(notice.title)
-                        .onTapGesture {
-                            selectedNotice = notice
-                            isNoticeEditorPresented = true
-                        }
-                }
-                .onDelete(perform: noticeManager.deleteNotice)
-            }
-            .navigationBarTitle("Notices")
-            .navigationBarItems(trailing:
-                                    Button(action: {
-                isNoticeEditorPresented=true
-            }) {
-                Image(systemName: "plus")
-            }
-            )
-            .sheet(isPresented: $isNoticeEditorPresented) {
-                NoticeEditorView(noticeManager: noticeManager, notice: selectedNotice)
-            }
-        }
-    }
-    
-    
     
     
     
     // MARK: - Expense Editor View
     struct ExpenseEditorView: View {
         @ObservedObject var expenseManager: ExpenseManager
-        @Binding var isPresented: Bool // 將編輯頁面的顯示狀態綁定到外部
+        @Binding var isPresented: Bool
         
         var expense: Expense?
         
@@ -439,7 +393,7 @@ struct LogoView: View {
             expenseManager.saveExpenses()
             
             isSaving = false
-            isPresented = false // 在保存後關閉編輯頁面
+            isPresented = false
         }
     }
     
@@ -447,8 +401,7 @@ struct LogoView: View {
     
     struct ExpenseRow: View {
         var expense: Expense
-        var onEdit: () -> Void // 添加 onEdit 闭包
-        
+        var onEdit: () -> Void
         var body: some View {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
@@ -466,7 +419,7 @@ struct LogoView: View {
                 Spacer()
                 
                 Button(action: {
-                    onEdit() // 点击编辑按钮时调用 onEdit 闭包
+                    onEdit()
                 }) {
                     Image(systemName: "square.and.pencil")
                         .foregroundColor(.blue)
@@ -480,51 +433,6 @@ struct LogoView: View {
             formatter.timeStyle = .none
             return formatter
         }()
-    }
-    
-    
-    
-    
-    
-    
-    // MARK: - Notice Editor View
-    
-    struct NoticeEditorView: View {
-        @ObservedObject var noticeManager: NoticeManager
-        var notice: Notice?
-        
-        @State private var title: String = ""
-        @State private var content: String = ""
-        @State private var postedBy: String = ""
-        @State private var date: Date = Date()
-        
-        var body: some View {
-            Form {
-                TextField("Title", text: $title)
-                TextField("Content", text: $content)
-                TextField("Posted By", text: $postedBy)
-                DatePicker("Date", selection: $date, displayedComponents: .date)
-            }
-            .onAppear {
-                if let notice = notice {
-                    title = notice.title
-                    content = notice.content
-                    postedBy = notice.postedBy
-                    date = notice.date
-                }
-            }
-            .navigationBarTitle(notice != nil ? "Edit Notice" : "Add Notice")
-            .navigationBarItems(trailing:
-                                    Button("Save") {
-                let updatedNotice = Notice(title: title, content: content, postedBy: postedBy, date: date)
-                if let notice = notice {
-                    noticeManager.updateNotice(at: noticeManager.notices.firstIndex(of: notice)!, with: updatedNotice)
-                } else {
-                    noticeManager.addNotice(notice: updatedNotice)
-                }
-            }
-            )
-        }
     }
     
     #Preview{

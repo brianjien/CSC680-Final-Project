@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4ACD11092BF33B7700C8E186 /* MemoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD11082BF33B7700C8E186 /* MemoManager.swift */; };
+		4ACD110B2BF33BDC00C8E186 /* MemoEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD110A2BF33BDC00C8E186 /* MemoEditorView.swift */; };
+		4ACD110D2BF33C0B00C8E186 /* MemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD110C2BF33C0B00C8E186 /* MemoListView.swift */; };
 		EE956CEB2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CEA2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift */; };
 		EE956CED2BEFDAC900D28DF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CEC2BEFDAC900D28DF2 /* ContentView.swift */; };
 		EE956CEF2BEFDACA00D28DF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE956CEE2BEFDACA00D28DF2 /* Assets.xcassets */; };
@@ -19,10 +22,12 @@
 		EE956D072BEFDBAC00D28DF2 /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956D002BEFDBAC00D28DF2 /* TaskManager.swift */; };
 		EE956D0B2BEFDBE600D28DF2 /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956D082BEFDBE600D28DF2 /* ExpenseListView.swift */; };
 		EE956D0C2BEFDBE600D28DF2 /* ExpenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956D092BEFDBE600D28DF2 /* ExpenseManager.swift */; };
-		EE956D0E2BEFDC0800D28DF2 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956D0D2BEFDC0800D28DF2 /* CalendarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4ACD11082BF33B7700C8E186 /* MemoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoManager.swift; sourceTree = "<group>"; };
+		4ACD110A2BF33BDC00C8E186 /* MemoEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditorView.swift; sourceTree = "<group>"; };
+		4ACD110C2BF33C0B00C8E186 /* MemoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListView.swift; sourceTree = "<group>"; };
 		EE956CE72BEFDAC900D28DF2 /* CSC680 Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CSC680 Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE956CEA2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSC680_ProjectApp.swift; sourceTree = "<group>"; };
 		EE956CEC2BEFDAC900D28DF2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -36,7 +41,6 @@
 		EE956D002BEFDBAC00D28DF2 /* TaskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
 		EE956D082BEFDBE600D28DF2 /* ExpenseListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseListView.swift; sourceTree = "<group>"; };
 		EE956D092BEFDBE600D28DF2 /* ExpenseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseManager.swift; sourceTree = "<group>"; };
-		EE956D0D2BEFDC0800D28DF2 /* CalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +54,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4ACD11072BF33AFA00C8E186 /* Memo */ = {
+			isa = PBXGroup;
+			children = (
+				4ACD11082BF33B7700C8E186 /* MemoManager.swift */,
+				4ACD110A2BF33BDC00C8E186 /* MemoEditorView.swift */,
+				4ACD110C2BF33C0B00C8E186 /* MemoListView.swift */,
+			);
+			path = Memo;
+			sourceTree = "<group>";
+		};
 		EE956CDE2BEFDAC900D28DF2 = {
 			isa = PBXGroup;
 			children = (
@@ -69,7 +83,7 @@
 		EE956CE92BEFDAC900D28DF2 /* CSC680 Project */ = {
 			isa = PBXGroup;
 			children = (
-				EE956D0D2BEFDC0800D28DF2 /* CalendarView.swift */,
+				4ACD11072BF33AFA00C8E186 /* Memo */,
 				EE956D0A2BEFDBE600D28DF2 /* Expenses */,
 				EE956CFB2BEFDBAC00D28DF2 /* Login */,
 				EE956CF92BEFDBAC00D28DF2 /* Registration */,
@@ -206,15 +220,17 @@
 			files = (
 				EE956D062BEFDBAC00D28DF2 /* TaskListView.swift in Sources */,
 				EE956D022BEFDBAC00D28DF2 /* RegistrationView.swift in Sources */,
+				4ACD11092BF33B7700C8E186 /* MemoManager.swift in Sources */,
+				4ACD110D2BF33C0B00C8E186 /* MemoListView.swift in Sources */,
 				EE956D0C2BEFDBE600D28DF2 /* ExpenseManager.swift in Sources */,
 				EE956D072BEFDBAC00D28DF2 /* TaskManager.swift in Sources */,
 				EE956D042BEFDBAC00D28DF2 /* SettingView.swift in Sources */,
 				EE956D0B2BEFDBE600D28DF2 /* ExpenseListView.swift in Sources */,
-				EE956D0E2BEFDC0800D28DF2 /* CalendarView.swift in Sources */,
 				EE956CED2BEFDAC900D28DF2 /* ContentView.swift in Sources */,
 				EE956D032BEFDBAC00D28DF2 /* Login_View.swift in Sources */,
 				EE956D052BEFDBAC00D28DF2 /* TaskEditorView.swift in Sources */,
 				EE956CEB2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift in Sources */,
+				4ACD110B2BF33BDC00C8E186 /* MemoEditorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
