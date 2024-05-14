@@ -13,6 +13,8 @@ struct CSC680_ProjectApp: App {
     @StateObject private var taskManager = TaskManager()
     @StateObject private var expenseManager = ExpenseManager()
     @StateObject private var memoManager = MemoManager()
+    @UIApplicationDelegateAdaptor var appDelegate: AppDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView()

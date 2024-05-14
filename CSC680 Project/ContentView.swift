@@ -370,8 +370,15 @@ struct LogoView: View {
 struct ChoresAssignerView: View {
     @ObservedObject var taskManager: TaskManager
     @State private var assignedTask: Task?
+    @State private var assignedTasks: [AssignedTask] = []
     @State private var isAssigningTask: Bool = false
     @State private var timer: Timer?
+    @State private var assignedToName: String = ""
+    
+    struct AssignedTask {
+        var task: Task
+        var assignedTo: String
+    }
     
     var body: some View {
         VStack {
@@ -380,11 +387,11 @@ struct ChoresAssignerView: View {
                 .padding()
             
             if let assignedTask = assignedTask {
-                Text("\(assignedTask.title) - \(assignedTask.assignedTo)")
+                Text("\(assignedTask.title) - \(assignedToName)")
                     .font(.title)
                     .padding()
             } else if isAssigningTask {
-                Text("Assigning task...")
+                Text("Assigning task to \(assignedToName)...")
                     .font(.title)
                     .padding()
             } else {
@@ -399,10 +406,24 @@ struct ChoresAssignerView: View {
                 }
                 .padding()
             } else {
+                TextField("Assign task to", text: $assignedToName)
+                    .padding()
                 Button("Lottery") {
                     startAssigningTask()
                 }
                 .padding()
+            }
+            
+            if !assignedTasks.isEmpty {
+                Divider()
+                Text("Assigned Tasks:")
+                    .font(.headline)
+                    .padding(.top)
+                ForEach(assignedTasks.indices, id: \.self) { index in
+                    let task = assignedTasks[index]
+                    Text("\(task.task.title) - \(task.assignedTo)")
+                        .padding(.bottom, 4)
+                }
             }
         }
         .onDisappear {
@@ -411,15 +432,21 @@ struct ChoresAssignerView: View {
     }
     
     private func startAssigningTask() {
+        guard !assignedToName.isEmpty else { return }
         isAssigningTask = true
         timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
             assignTask()
         }
     }
-    
     private func stopAssigningTask() {
         isAssigningTask = false
         timer?.invalidate()
+
+        if let task = assignedTask {
+            assignedTasks.append(AssignedTask(task: task, assignedTo: assignedToName))
+            taskManager.removeTask(withId: task.id) 
+        }
+        assignedTask = nil
     }
     
     private func assignTask() {
@@ -430,41 +457,8 @@ struct ChoresAssignerView: View {
             assignedTask = nil
         }
     }
+
 }
-
-
-
-struct WheelOfFortuneView: View {
-    let tasks: [Task]
-    
-    var body: some View {
-        Text("Wheel of Fortune")
-    }
-}
-
-
-
-struct WheelSpinner: View {
-    @Binding var degrees: Double
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(Color.blue, lineWidth: 5)
-                .frame(width: 200, height: 200)
-            Text("Spin")
-                .font(.title)
-                .foregroundColor(.blue)
-                .offset(y: -80)
-                .rotationEffect(.degrees(-90))
-                .rotationEffect(.degrees(degrees))
-                .animation(.easeInOut)
-        }
-    }
-}
-
-
-
 
 
 

@@ -37,4 +37,7 @@ class TaskManager: ObservableObject {
             self.tasks = decodedTasks
         }
     }
+    func removeTask(withId taskId: UUID) {
+         tasks.removeAll { $0.id == taskId }
+     }
 }
