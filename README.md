@@ -45,3 +45,35 @@ The Chore Assigner app aims to simplify the process of assigning and tracking ho
 ### Wireframe:
 ![CSC680 (1)](https://github.com/brianjien/CSC680-Final-Project/assets/62172612/0d19998a-b267-424b-8f74-9c0fc40011ea)
 
+
+## M2
+1. Task Management:
+    * UI design for creating tasks: 2 hours
+    * Logic for task creation and management: 2 hours
+    * Total: 4 hours
+2. Task Assignment:
+    * UI design for browsing and selecting tasks: 2hours
+    * Logic for task assignment: 2 hours
+    * Total: 4 hours
+3. User Management:
+    * UI design for user registration and profile creation: 2 hours
+    * Logic for user authentication and profile management: 2 hours
+    * Total: 4 hours
+4. Expense Tracking (Shared Expenses):
+    * UI design for recording shared expenses: 2 hours
+    * Logic for expense recording and summary generation: 3 hours
+    * Total: 5 hours
+5. Memo:
+    * UI design for memo:2
+    * Logic for memo and checkbox:1
+    * Total: 5 hours
+6. ChoresAssigner:
+    * UI design for assign task: 2 hours
+    * Logic for AssigningTask: 2 hours
+    * Total: 4 hours
+The total estimated hours would be: 26 hours
+26 hours / 2 members = 13 hours per member.
+Assigning:
+* Task Management, Task Assignment, Memo: Hsin Yu Chen
+* User Management, Expense Tracking, ChoresAssigner: Chih Lin Chien
+
