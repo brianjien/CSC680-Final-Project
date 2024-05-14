@@ -1,5 +1,4 @@
 import SwiftUI
-
 struct RegistrationView: View {
     @EnvironmentObject var userManager: UserManager
     @Binding var navigateToRegistration: Bool
@@ -8,46 +7,51 @@ struct RegistrationView: View {
     @State private var confirmPassword: String = ""
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State private var isLoading: Bool = false
     
     var body: some View {
-            ZStack {
-                Color.white.edgesIgnoringSafeArea(.all)
+        ZStack {
+            Color.white.edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Spacer()
                 
-                VStack {
-                    Spacer()
-                    
-                    Text("Registration")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+                Text("Registration")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding()
+                
+                Image(systemName: "person.badge.plus")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+                    .padding(.bottom, 30)
+                
+                VStack(spacing: 20) {
+                    TextField("Username", text: $username)
                         .padding()
+                        .background(Color.white)
+                        .cornerRadius(8)
+                        .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
                     
-                    Image(systemName: "person.badge.plus")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 100, height: 100)
-                        .padding(.bottom, 30)
+                    SecureField("Password", text: $password)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(8)
+                        .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
                     
-                    VStack(spacing: 20) {
-                        TextField("Username", text: $username)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(8)
-                            .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
-                        
-                        SecureField("Password", text: $password)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(8)
-                            .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
-                        
-                        SecureField("Confirm Password", text: $confirmPassword)
-                            .padding()
-                            .background(Color.white)
-                            .cornerRadius(8)
-                            .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
-                    }
-                    .padding(.horizontal, 40)
-                    
+                    SecureField("Confirm Password", text: $confirmPassword)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(8)
+                        .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
+                }
+                .padding(.horizontal, 40)
+                
+                if isLoading {
+                    LoadingIndicator()
+                        .padding(.top, 20)
+                } else {
                     Button(action: register) {
                         Text("Register")
                             .foregroundColor(.white)
@@ -74,15 +78,16 @@ struct RegistrationView: View {
                             )
                             .padding(.horizontal, 40)
                     }
-                    
-                    Spacer()
                 }
-            }
-            .padding()
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                
+                Spacer()
             }
         }
+        .padding()
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+    }
     
     func register() {
         if username.isEmpty || password.isEmpty || confirmPassword.isEmpty {
@@ -97,7 +102,12 @@ struct RegistrationView: View {
             return
         }
         
-        userManager.register(username: username, password: password)
-        navigateToRegistration = false
+        // Simulate registration process
+        isLoading = true // Show loading indicator
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            userManager.register(username: username, password: password)
+            isLoading = false // Hide loading indicator
+            navigateToRegistration = false
+        }
     }
 }

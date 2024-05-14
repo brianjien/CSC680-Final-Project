@@ -1,17 +1,8 @@
-//
-//  MemoManager.swift
-//  CSC680 Project
-//
-//  Created by brianjien on 5/13/24.
-//
-
 import SwiftUI
-// MARK: - Memo Manager
 
 class MemoManager: ObservableObject {
     @Published var memos: [Memo] = []
-    
-    // sample memos
+
     init() {
         self.memos = [
             Memo(title: "Shopping List", content: "Buy groceries", date: Date(), checklistItems: [
@@ -26,16 +17,43 @@ class MemoManager: ObservableObject {
             ])
         ]
     }
-    
+
     func addMemo(memo: Memo) {
         memos.append(memo)
     }
-    
+
     func deleteMemo(at indexSet: IndexSet) {
         memos.remove(atOffsets: indexSet)
     }
-    
+
     func updateMemo(at index: Int, with memo: Memo) {
         memos[index] = memo
     }
+
+    func filterMemos(by filter: MemoFilter) -> [Memo] {
+        switch filter {
+        case .memo:
+            return memos
+        case .checklist:
+            return memos.filter { !$0.checklistItems.isEmpty }
+        }
+    }
+
+    func allChecklistItems() -> [ChecklistItem] {
+        memos.flatMap { $0.checklistItems }
+    }
+
+    func indexOfChecklistItem(_ checklistItem: ChecklistItem) -> (Int, Int)? {
+        for (memoIndex, memo) in memos.enumerated() {
+            if let itemIndex = memo.checklistItems.firstIndex(of: checklistItem){
+                return (memoIndex, itemIndex)
+            }
+        }
+        return nil
+    }
+}
+
+enum MemoFilter {
+    case memo
+    case checklist
 }

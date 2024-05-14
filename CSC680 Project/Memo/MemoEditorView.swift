@@ -1,36 +1,29 @@
-//
-//  MemoEditorView.swift
-//  CSC680 Project
-//
-//  Created by brianjien on 5/13/24.
-//
-
-// MARK: - Memo Editor View
 import SwiftUI
 struct MemoEditorView: View {
     @ObservedObject var memoManager: MemoManager
+    @Binding var isPresented: Bool
     var memo: Memo?
     
     @State private var title: String = ""
     @State private var content: String = ""
     @State private var date: Date = Date()
     @State private var checklistItems: [ChecklistItem] = []
+    @State private var isSaving: Bool = false
     
     var body: some View {
         Form {
-            Section(header: Text("Memo Details")) {
-                TextField("Title", text: $title)
-                TextField("Content", text: $content)
-                DatePicker("Date", selection: $date, displayedComponents: .date)
-            }
+            TextField("Title", text: $title)
+            TextField("Content", text: $content)
+            DatePicker("Date", selection: $date, displayedComponents: .date)
             
             Section(header: Text("Checklist")) {
                 ForEach(checklistItems.indices, id: \.self) { index in
-                    ChecklistItemRow(checklistItem: $checklistItems[index])
+                    if !checklistItems[index].isChecked {
+                        ChecklistItemRow(checklistItem: self.$checklistItems[index])
+                    }
                 }
-                
                 Button(action: {
-                    checklistItems.append(ChecklistItem(title: "", isChecked: false))
+                    self.checklistItems.append(ChecklistItem(title: "", isChecked: false))
                 }) {
                     HStack {
                         Image(systemName: "plus.circle.fill")
@@ -38,6 +31,16 @@ struct MemoEditorView: View {
                     }
                 }
             }
+
+
+            
+            Button(action: {
+                isSaving = true
+                saveMemo()
+            }) {
+                Text("Save")
+            }
+            .disabled(isSaving)
         }
         .onAppear {
             if let memo = memo {
@@ -48,31 +51,20 @@ struct MemoEditorView: View {
             }
         }
         .navigationBarTitle(memo != nil ? "Edit Memo" : "Add Memo")
-        .navigationBarItems(trailing:
-                                Button("Save") {
-            let updatedMemo = Memo(title: title, content: content, date: date, checklistItems: checklistItems)
+    }
+
+    private func saveMemo() {
+        let updatedMemo = Memo(title: title, content: content, date: date, checklistItems: checklistItems)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if let memo = memo {
-                memoManager.updateMemo(at: memoManager.memos.firstIndex(of: memo)!, with: updatedMemo)
+                if let index = memoManager.memos.firstIndex(of: memo) {
+                    memoManager.updateMemo(at: index, with: updatedMemo)
+                }
             } else {
                 memoManager.addMemo(memo: updatedMemo)
             }
-        }
-        )
-    }
-}
-
-struct ChecklistItemRow: View {
-    @Binding var checklistItem: ChecklistItem
-    
-    var body: some View {
-        HStack {
-            TextField("Checklist Item", text: $checklistItem.title)
-            Spacer()
-            Image(systemName: checklistItem.isChecked ? "checkmark.circle.fill" : "circle")
-                .foregroundColor(checklistItem.isChecked ? .green : .gray)
-                .onTapGesture {
-                    checklistItem.isChecked.toggle()
-                }
+            isSaving = false
+            isPresented = false
         }
     }
 }

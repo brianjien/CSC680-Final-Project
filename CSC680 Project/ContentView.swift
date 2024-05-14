@@ -33,11 +33,15 @@ struct Memo: Identifiable, Equatable, Codable {
     var title: String
     var content: String
     var date: Date
-    var checklistItems: [ChecklistItem] // New property for checklist items
+    var checklistItems: [ChecklistItem]
     
     static func == (lhs: Memo, rhs: Memo) -> Bool {
         return lhs.id == rhs.id
     }
+    mutating func deleteChecklistItem(at index: Int) {
+            guard index < checklistItems.count else { return }
+            checklistItems.remove(at: index)
+        }
 }
 
 struct ChecklistItem: Identifiable, Equatable, Codable {
@@ -113,14 +117,13 @@ class UserManager: ObservableObject {
 
 
 // MARK: - ContentView - Main User Interface
-
 struct ContentView: View {
     @EnvironmentObject var userManager: UserManager
     @State private var navigateToRegistration: Bool = false
     @State private var isLoggedIn: Bool = false
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    @EnvironmentObject var memoManager: MemoManager
+    @State private var isLoading: Bool = false // Add loading state
 
     var body: some View {
         NavigationView {
@@ -136,7 +139,6 @@ struct ContentView: View {
                             .tabItem {
                                 Label("Expenses", systemImage: "square.and.pencil")
                             }
-                        
                         MemoListView(memoManager: MemoManager())
                             .tabItem {
                                 Label("Memos", systemImage: "note.text")
@@ -144,7 +146,8 @@ struct ContentView: View {
                         ChoresAssignerView(userManager: _userManager, taskManager: TaskManager())
                             .tabItem {
                                 Label("Chores Assigner", systemImage: "wand.and.stars")
-                            }
+                        }
+                        
                     }
                     .padding(.bottom, 8)
                     .edgesIgnoringSafeArea(.bottom)
@@ -190,11 +193,27 @@ struct ContentView: View {
                                         }
                                     }
             )
+            .overlay(
+                // Loading indicator
+                Group {
+                    if isLoading {
+                        LoadingIndicator()
+                    }
+                }
+            )
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }
-
+struct LoadingIndicator: View {
+    var body: some View {
+        ProgressView()
+            .progressViewStyle(CircularProgressViewStyle())
+            .background(Color.white) // Ensure the background color is set to white
+            .cornerRadius(10)
+            .shadow(radius: 5)
+    }
+}
 
 struct LogoView: View {
     var body: some View {
@@ -423,12 +442,9 @@ struct WheelSpinner: View {
 }
 
 
+#Preview{
+    ContentView()
+        .environmentObject(UserManager())
+}
 
 
-
-
-
-    #Preview{
-        ContentView()
-            .environmentObject(UserManager())
-    }

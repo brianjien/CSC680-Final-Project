@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A5DF8B52BF3480B0092CA3B /* ChecklistItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5DF8B42BF3480B0092CA3B /* ChecklistItemRow.swift */; };
 		EE8C4AB12BF339C000C6102E /* ExpenseEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8C4AB02BF339C000C6102E /* ExpenseEditorView.swift */; };
 		EE8C4AB32BF33A0400C6102E /* MemoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8C4AB22BF33A0400C6102E /* MemoManager.swift */; };
 		EE8C4AB52BF33B1E00C6102E /* MemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8C4AB42BF33B1E00C6102E /* MemoListView.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4A5DF8B42BF3480B0092CA3B /* ChecklistItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChecklistItemRow.swift; path = "CSC680 Project/Memo/ChecklistItemRow.swift"; sourceTree = SOURCE_ROOT; };
 		EE8C4AB02BF339C000C6102E /* ExpenseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditorView.swift; sourceTree = "<group>"; };
 		EE8C4AB22BF33A0400C6102E /* MemoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoManager.swift; sourceTree = "<group>"; };
 		EE8C4AB42BF33B1E00C6102E /* MemoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListView.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				EE8C4AB22BF33A0400C6102E /* MemoManager.swift */,
 				EE8C4AB42BF33B1E00C6102E /* MemoListView.swift */,
 				EE8C4AB62BF33B3B00C6102E /* MemoEditorView.swift */,
+				4A5DF8B42BF3480B0092CA3B /* ChecklistItemRow.swift */,
 			);
 			path = memo;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				EE8C4AB12BF339C000C6102E /* ExpenseEditorView.swift in Sources */,
 				EE956D032BEFDBAC00D28DF2 /* Login_View.swift in Sources */,
 				EE956D052BEFDBAC00D28DF2 /* TaskEditorView.swift in Sources */,
+				4A5DF8B52BF3480B0092CA3B /* ChecklistItemRow.swift in Sources */,
 				EE956CEB2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,6 +360,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CSC680 Project/Preview Content\"";
+				DEVELOPMENT_TEAM = V4TCNRFR98;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -384,6 +389,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"CSC680 Project/Preview Content\"";
+				DEVELOPMENT_TEAM = V4TCNRFR98;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
