@@ -25,6 +25,9 @@ struct Expense: Identifiable, Equatable, Codable {
     var isSettled: Bool
 }
 
+
+
+// MARK: - Memo Model
 struct Memo: Identifiable, Equatable, Codable {
     var id = UUID()
     var title: String
@@ -60,6 +63,8 @@ enum Tab {
     case schedule
     case settings
 }
+
+
 
 
 
@@ -109,15 +114,13 @@ class UserManager: ObservableObject {
 
 // MARK: - ContentView - Main User Interface
 
-
-
 struct ContentView: View {
     @EnvironmentObject var userManager: UserManager
     @State private var navigateToRegistration: Bool = false
     @State private var isLoggedIn: Bool = false
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    @State private var isLoading: Bool = false // Add loading state
+    @EnvironmentObject var memoManager: MemoManager
 
     var body: some View {
         NavigationView {
@@ -134,7 +137,14 @@ struct ContentView: View {
                                 Label("Expenses", systemImage: "square.and.pencil")
                             }
                         
-                        
+                        MemoListView(memoManager: MemoManager())
+                            .tabItem {
+                                Label("Memos", systemImage: "note.text")
+                            }
+                        ChoresAssignerView(userManager: _userManager, taskManager: TaskManager())
+                            .tabItem {
+                                Label("Chores Assigner", systemImage: "wand.and.stars")
+                            }
                     }
                     .padding(.bottom, 8)
                     .edgesIgnoringSafeArea(.bottom)
@@ -180,27 +190,12 @@ struct ContentView: View {
                                         }
                                     }
             )
-            .overlay(
-                // Loading indicator
-                Group {
-                    if isLoading {
-                        LoadingIndicator()
-                    }
-                }
-            )
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }
 }
-struct LoadingIndicator: View {
-    var body: some View {
-        ProgressView()
-            .progressViewStyle(CircularProgressViewStyle())
-            .background(Color.white) // Ensure the background color is set to white
-            .cornerRadius(10)
-            .shadow(radius: 5)
-    }
-}
+
+
 struct LogoView: View {
     var body: some View {
         Image(systemName: "house.fill")
@@ -290,6 +285,9 @@ struct LogoView: View {
         var body: some View {
             NavigationView {
                 VStack {
+                    
+                    
+                    
                     Button("View Tasks") {
                         isTaskEditorPresented = true
                     }
@@ -306,7 +304,14 @@ struct LogoView: View {
                         ExpenseListView(expenseManager: expenseManager)
                     }
                     
-                   
+                    Button("View Notices") {
+                        isNoticeEditorPresented = true
+                    }
+                    .padding()
+                    .sheet(isPresented: $isNoticeEditorPresented) {
+                        
+                    }
+                    
                     Spacer()
                 }
                 .navigationBarTitle("Admin Dashboard")
@@ -333,110 +338,97 @@ struct LogoView: View {
         }
     }
     
+//MARK: CHores assigner
+
+struct ChoresAssignerView: View {
+    @EnvironmentObject var userManager: UserManager
+    @ObservedObject var taskManager: TaskManager
+    @State private var assignedTask: Task?
+    @State private var selectedUser: User?
+    @State private var isWheelSpinning: Bool = false
     
-    
-    
-    
-    
-    // MARK: - Expense Editor View
-    struct ExpenseEditorView: View {
-        @ObservedObject var expenseManager: ExpenseManager
-        @Binding var isPresented: Bool
-        
-        var expense: Expense?
-        
-        @State private var amount: String = ""
-        @State private var category: String = ""
-        @State private var contributors: String = ""
-        @State private var date: Date = Date()
-        @State private var isSettled: Bool = false
-        @State private var isSaving: Bool = false
-        
-        var body: some View {
-            Form {
-                TextField("Amount", text: $amount)
-                    .keyboardType(.decimalPad)
-                TextField("Category", text: $category)
-                TextField("Contributors", text: $contributors)
-                DatePicker("Date", selection: $date, displayedComponents: .date)
-                Toggle("Settled", isOn: $isSettled)
-                
-                Button(action: {
-                    isSaving = true
-                    saveExpense()
-                }) {
-                    Text("Save")
-                }
-                .disabled(isSaving)
-            }
-            .onAppear {
-                if let expense = expense {
-                    amount = "\(expense.amount)"
-                    category = expense.category
-                    contributors = expense.contributors.joined(separator: ", ")
-                    date = expense.date
-                    isSettled = expense.isSettled
-                }
-            }
-            .navigationBarTitle(expense != nil ? "Edit Expense" : "Add Expense")
-        }
-        
-        private func saveExpense() {
-            let contributorsArray = contributors.components(separatedBy: ",")
-            let updatedExpense = Expense(amount: Double(amount) ?? 0.0, category: category, contributors: contributorsArray, date: date, isSettled: isSettled)
-            if let expense = expense {
-                expenseManager.updateExpense(at: expenseManager.expenses.firstIndex(of: expense)!, with: updatedExpense)
-            } else {
-                expenseManager.addExpense(expense: updatedExpense)
+    var body: some View {
+        VStack {
+            if let selectedUser = selectedUser {
+                Text("Assigned to: \(selectedUser.username)")
+                    .font(.headline)
+                    .padding()
             }
             
-            expenseManager.saveExpenses()
+            if isWheelSpinning {
+                WheelOfFortuneView(users: userManager.registeredUsers, onSpinEnd: { user in
+                    self.selectedUser = user
+                    self.isWheelSpinning = false
+                })
+                .padding()
+            }
             
-            isSaving = false
-            isPresented = false
+            List(taskManager.tasks) { task in
+                Text("\(task.title) - \(task.assignedTo)")
+            }
+            .navigationBarTitle("Chores Assigner")
+            .navigationBarItems(trailing:
+                Button("Spin Wheel") {
+                    self.isWheelSpinning = true
+                }
+            )
         }
     }
     
+
+}
+struct WheelOfFortuneView: View {
+    let users: [User]
+    let onSpinEnd: (User) -> Void
+    @State private var spinDegrees: Double = 0
     
-    
-    struct ExpenseRow: View {
-        var expense: Expense
-        var onEdit: () -> Void
-        var body: some View {
-            HStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Amount: \(expense.amount)")
-                        .font(.headline)
-                    Text("Category: \(expense.category)")
-                        .font(.subheadline)
-                    Text("Contributors: \(expense.contributors.joined(separator: ", "))")
-                        .font(.subheadline)
-                    Text("Date: \(expense.date, formatter: dateFormatter)")
-                        .font(.subheadline)
+    var body: some View {
+        VStack {
+            Text("Tap the wheel to assign a user:")
+            WheelSpinner(degrees: $spinDegrees)
+                .onTapGesture {
+                    let randomIndex = Int.random(in: 0..<users.count)
+                    withAnimation {
+                        self.spinDegrees = 3600 + Double(randomIndex) * (360 / Double(users.count))
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        let selectedUser = users[randomIndex]
+                        withAnimation {
+                            self.spinDegrees = 0
+                        }
+                        self.onSpinEnd(selectedUser)
+                    }
                 }
-                .padding(.vertical)
-                
-                Spacer()
-                
-                Button(action: {
-                    onEdit()
-                }) {
-                    Image(systemName: "square.and.pencil")
-                        .foregroundColor(.blue)
-                }
-            }
         }
-        
-        private let dateFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .short
-            formatter.timeStyle = .none
-            return formatter
-        }()
     }
+}
+
+struct WheelSpinner: View {
+    @Binding var degrees: Double
     
+    var body: some View {
+        ZStack {
+            Circle()
+                .stroke(Color.blue, lineWidth: 5)
+                .frame(width: 200, height: 200)
+            Text("Spin")
+                .font(.title)
+                .foregroundColor(.blue)
+                .offset(y: -80)
+                .rotationEffect(.degrees(-90))
+                .rotationEffect(.degrees(degrees))
+                .animation(.easeInOut)
+        }
+    }
+}
+
+
+
+
+
+
+
     #Preview{
         ContentView()
             .environmentObject(UserManager())
     }
-

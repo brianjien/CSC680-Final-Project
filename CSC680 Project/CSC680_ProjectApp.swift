@@ -9,17 +9,18 @@ import SwiftUI
 
 @main
 struct CSC680_ProjectApp: App {
- @StateObject private var userManager = UserManager()
+    @StateObject private var userManager = UserManager()
     @StateObject private var taskManager = TaskManager()
     @StateObject private var expenseManager = ExpenseManager()
-    @StateObject private var noticeManager = NoticeManager()
+    @StateObject private var memoManager = MemoManager()
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(userManager)
                 .environmentObject(taskManager)
                 .environmentObject(expenseManager)
-                .environmentObject(noticeManager)
+                .environmentObject(memoManager)
+
         }
     }
 }

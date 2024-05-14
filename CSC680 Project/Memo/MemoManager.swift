@@ -1,7 +1,17 @@
+//
+//  MemoManager.swift
+//  CSC680 Project
+//
+//  Created by brianjien on 5/13/24.
+//
+
 import SwiftUI
+// MARK: - Memo Manager
+
 class MemoManager: ObservableObject {
     @Published var memos: [Memo] = []
     
+    // sample memos
     init() {
         self.memos = [
             Memo(title: "Shopping List", content: "Buy groceries", date: Date(), checklistItems: [

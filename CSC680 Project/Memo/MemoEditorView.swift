@@ -1,3 +1,10 @@
+//
+//  MemoEditorView.swift
+//  CSC680 Project
+//
+//  Created by brianjien on 5/13/24.
+//
+
 // MARK: - Memo Editor View
 import SwiftUI
 struct MemoEditorView: View {

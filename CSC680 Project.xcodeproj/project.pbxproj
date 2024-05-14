@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4ACD11092BF33B7700C8E186 /* MemoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD11082BF33B7700C8E186 /* MemoManager.swift */; };
-		4ACD110B2BF33BDC00C8E186 /* MemoEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD110A2BF33BDC00C8E186 /* MemoEditorView.swift */; };
-		4ACD110D2BF33C0B00C8E186 /* MemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD110C2BF33C0B00C8E186 /* MemoListView.swift */; };
+		EE8C4AB12BF339C000C6102E /* ExpenseEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8C4AB02BF339C000C6102E /* ExpenseEditorView.swift */; };
+		EE8C4AB32BF33A0400C6102E /* MemoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8C4AB22BF33A0400C6102E /* MemoManager.swift */; };
+		EE8C4AB52BF33B1E00C6102E /* MemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8C4AB42BF33B1E00C6102E /* MemoListView.swift */; };
+		EE8C4AB72BF33B3B00C6102E /* MemoEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE8C4AB62BF33B3B00C6102E /* MemoEditorView.swift */; };
 		EE956CEB2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CEA2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift */; };
 		EE956CED2BEFDAC900D28DF2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CEC2BEFDAC900D28DF2 /* ContentView.swift */; };
 		EE956CEF2BEFDACA00D28DF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE956CEE2BEFDACA00D28DF2 /* Assets.xcassets */; };
 		EE956CF22BEFDACA00D28DF2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE956CF12BEFDACA00D28DF2 /* Preview Assets.xcassets */; };
 		EE956D022BEFDBAC00D28DF2 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CF82BEFDBAC00D28DF2 /* RegistrationView.swift */; };
 		EE956D032BEFDBAC00D28DF2 /* Login_View.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CFA2BEFDBAC00D28DF2 /* Login_View.swift */; };
-		EE956D042BEFDBAC00D28DF2 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CFC2BEFDBAC00D28DF2 /* SettingView.swift */; };
 		EE956D052BEFDBAC00D28DF2 /* TaskEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CFE2BEFDBAC00D28DF2 /* TaskEditorView.swift */; };
 		EE956D062BEFDBAC00D28DF2 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956CFF2BEFDBAC00D28DF2 /* TaskListView.swift */; };
 		EE956D072BEFDBAC00D28DF2 /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956D002BEFDBAC00D28DF2 /* TaskManager.swift */; };
@@ -25,9 +25,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4ACD11082BF33B7700C8E186 /* MemoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoManager.swift; sourceTree = "<group>"; };
-		4ACD110A2BF33BDC00C8E186 /* MemoEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditorView.swift; sourceTree = "<group>"; };
-		4ACD110C2BF33C0B00C8E186 /* MemoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListView.swift; sourceTree = "<group>"; };
+		EE8C4AB02BF339C000C6102E /* ExpenseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditorView.swift; sourceTree = "<group>"; };
+		EE8C4AB22BF33A0400C6102E /* MemoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoManager.swift; sourceTree = "<group>"; };
+		EE8C4AB42BF33B1E00C6102E /* MemoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListView.swift; sourceTree = "<group>"; };
+		EE8C4AB62BF33B3B00C6102E /* MemoEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoEditorView.swift; sourceTree = "<group>"; };
 		EE956CE72BEFDAC900D28DF2 /* CSC680 Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CSC680 Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE956CEA2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSC680_ProjectApp.swift; sourceTree = "<group>"; };
 		EE956CEC2BEFDAC900D28DF2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,7 +36,6 @@
 		EE956CF12BEFDACA00D28DF2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EE956CF82BEFDBAC00D28DF2 /* RegistrationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		EE956CFA2BEFDBAC00D28DF2 /* Login_View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login_View.swift; sourceTree = "<group>"; };
-		EE956CFC2BEFDBAC00D28DF2 /* SettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		EE956CFE2BEFDBAC00D28DF2 /* TaskEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskEditorView.swift; sourceTree = "<group>"; };
 		EE956CFF2BEFDBAC00D28DF2 /* TaskListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		EE956D002BEFDBAC00D28DF2 /* TaskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
@@ -54,14 +54,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4ACD11072BF33AFA00C8E186 /* Memo */ = {
+		EE8C4AAF2BF3396300C6102E /* memo */ = {
 			isa = PBXGroup;
 			children = (
-				4ACD11082BF33B7700C8E186 /* MemoManager.swift */,
-				4ACD110A2BF33BDC00C8E186 /* MemoEditorView.swift */,
-				4ACD110C2BF33C0B00C8E186 /* MemoListView.swift */,
+				EE8C4AB22BF33A0400C6102E /* MemoManager.swift */,
+				EE8C4AB42BF33B1E00C6102E /* MemoListView.swift */,
+				EE8C4AB62BF33B3B00C6102E /* MemoEditorView.swift */,
 			);
-			path = Memo;
+			path = memo;
 			sourceTree = "<group>";
 		};
 		EE956CDE2BEFDAC900D28DF2 = {
@@ -83,11 +83,10 @@
 		EE956CE92BEFDAC900D28DF2 /* CSC680 Project */ = {
 			isa = PBXGroup;
 			children = (
-				4ACD11072BF33AFA00C8E186 /* Memo */,
+				EE8C4AAF2BF3396300C6102E /* memo */,
 				EE956D0A2BEFDBE600D28DF2 /* Expenses */,
 				EE956CFB2BEFDBAC00D28DF2 /* Login */,
 				EE956CF92BEFDBAC00D28DF2 /* Registration */,
-				EE956CFD2BEFDBAC00D28DF2 /* Setting */,
 				EE956D012BEFDBAC00D28DF2 /* Task */,
 				EE956CEA2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift */,
 				EE956CEC2BEFDAC900D28DF2 /* ContentView.swift */,
@@ -121,14 +120,6 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
-		EE956CFD2BEFDBAC00D28DF2 /* Setting */ = {
-			isa = PBXGroup;
-			children = (
-				EE956CFC2BEFDBAC00D28DF2 /* SettingView.swift */,
-			);
-			path = Setting;
-			sourceTree = "<group>";
-		};
 		EE956D012BEFDBAC00D28DF2 /* Task */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +135,7 @@
 			children = (
 				EE956D082BEFDBE600D28DF2 /* ExpenseListView.swift */,
 				EE956D092BEFDBE600D28DF2 /* ExpenseManager.swift */,
+				EE8C4AB02BF339C000C6102E /* ExpenseEditorView.swift */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -219,18 +211,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE956D062BEFDBAC00D28DF2 /* TaskListView.swift in Sources */,
+				EE8C4AB72BF33B3B00C6102E /* MemoEditorView.swift in Sources */,
+				EE8C4AB32BF33A0400C6102E /* MemoManager.swift in Sources */,
+				EE8C4AB52BF33B1E00C6102E /* MemoListView.swift in Sources */,
 				EE956D022BEFDBAC00D28DF2 /* RegistrationView.swift in Sources */,
-				4ACD11092BF33B7700C8E186 /* MemoManager.swift in Sources */,
-				4ACD110D2BF33C0B00C8E186 /* MemoListView.swift in Sources */,
 				EE956D0C2BEFDBE600D28DF2 /* ExpenseManager.swift in Sources */,
 				EE956D072BEFDBAC00D28DF2 /* TaskManager.swift in Sources */,
-				EE956D042BEFDBAC00D28DF2 /* SettingView.swift in Sources */,
 				EE956D0B2BEFDBE600D28DF2 /* ExpenseListView.swift in Sources */,
 				EE956CED2BEFDAC900D28DF2 /* ContentView.swift in Sources */,
+				EE8C4AB12BF339C000C6102E /* ExpenseEditorView.swift in Sources */,
 				EE956D032BEFDBAC00D28DF2 /* Login_View.swift in Sources */,
 				EE956D052BEFDBAC00D28DF2 /* TaskEditorView.swift in Sources */,
 				EE956CEB2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift in Sources */,
-				4ACD110B2BF33BDC00C8E186 /* MemoEditorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

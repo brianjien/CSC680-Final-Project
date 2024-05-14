@@ -1,4 +1,5 @@
 import SwiftUI
+
 struct LoginView: View {
     @EnvironmentObject var userManager: UserManager
     @Binding var navigateToRegistration: Bool
@@ -8,7 +9,6 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    @State private var isLoading: Bool = false
     
     var body: some View {
         ZStack {
@@ -44,26 +44,18 @@ struct LoginView: View {
                 }
                 .padding(.horizontal, 40)
                 
-                if !isLoading {
-                    Button(action: {
-                        isLoading = true // Show loading indicator
-                        login(username: username, password: password)
-                    }) {
-                        Text("Login")
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .cornerRadius(8)
-                            .padding(.horizontal, 40)
-                    }
-                    .disabled(username.isEmpty || password.isEmpty)
+                Button(action: {
+                    login(username: username, password: password)
+                }) {
+                    Text("Login")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                        .padding(.horizontal, 40)
                 }
-                
-                if isLoading {
-                    LoadingIndicator()
-                        .padding(.top, 20)
-                }
+                .disabled(username.isEmpty || password.isEmpty)
                 
                 Spacer()
                 
@@ -87,8 +79,6 @@ struct LoginView: View {
     }
     
     func login(username: String, password: String) {
-        // Simulate login process
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if let user = userManager.registeredUsers.first(where: { $0.username == username && $0.password == password }) {
                 userManager.isLoggedIn = true
                 userManager.currentUser = user
@@ -97,8 +87,5 @@ struct LoginView: View {
                 showAlert = true
                 alertMessage = "Invalid username or password."
             }
-            
-            isLoading = false // Hide loading indicator
         }
-    }
 }
