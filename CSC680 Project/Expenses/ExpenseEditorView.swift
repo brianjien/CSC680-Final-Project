@@ -1,7 +1,14 @@
+//
+//  ExpenseEditorView.swift
+//  CSC680 Project
+//
+//  Created by brianjien on 5/13/24.
+//
 import SwiftUI
+// MARK: - Expense Editor View
 struct ExpenseEditorView: View {
     @ObservedObject var expenseManager: ExpenseManager
-    @Binding var isPresented: Bool
+    @Binding var isPresented: Bool // 將編輯頁面的顯示狀態綁定到外部
     
     var expense: Expense?
     

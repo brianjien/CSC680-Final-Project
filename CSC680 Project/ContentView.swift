@@ -33,15 +33,11 @@ struct Memo: Identifiable, Equatable, Codable {
     var title: String
     var content: String
     var date: Date
-    var checklistItems: [ChecklistItem]
+    var checklistItems: [ChecklistItem] // New property for checklist items
     
     static func == (lhs: Memo, rhs: Memo) -> Bool {
         return lhs.id == rhs.id
     }
-    mutating func deleteChecklistItem(at index: Int) {
-            guard index < checklistItems.count else { return }
-            checklistItems.remove(at: index)
-        }
 }
 
 struct ChecklistItem: Identifiable, Equatable, Codable {
@@ -50,13 +46,13 @@ struct ChecklistItem: Identifiable, Equatable, Codable {
     var isChecked: Bool
 }
 
-struct User {
+struct User: Codable {
     var username: String
     var password: String
     var role: UserRole
 }
 
-enum UserRole {
+enum UserRole: String, Codable {
     case admin
     case regular
 }
@@ -76,15 +72,12 @@ enum Tab {
 class UserManager: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var currentUser: User?
-    // Maintain a list of registered users
     var registeredUsers: [User] = []
     
     init() {
-        // sample admin user
-        let adminUser = User(username: "", password: "", role: .admin)
-        registeredUsers.append(adminUser)
+        // Load registered users from UserDefaults on initialization
+        loadRegisteredUsers()
     }
-    
     func login(username: String, password: String) {
         if let user = registeredUsers.first(where: { $0.username == username && $0.password == password }) {
             print("Pass")
@@ -101,18 +94,30 @@ class UserManager: ObservableObject {
     }
     
     func register(username: String, password: String) {
-        if registeredUsers.contains(where: { $0.username == username }) {
-            print("Username already exists. Please choose a different username.")
-            return
-        }
+        // Registration logic...
         let newUser = User(username: username, password: password, role: .regular)
         registeredUsers.append(newUser)
-        print("Registration successful. You can now login with your credentials.")
-        print("Registered users: \(registeredUsers)")
+        saveRegisteredUsers() // Save registered users after adding a new user
+    }
+    
+    // Function to save registered users to UserDefaults
+    private func saveRegisteredUsers() {
+        let encoder = JSONEncoder()
+        if let encodedData = try? encoder.encode(registeredUsers) {
+            UserDefaults.standard.set(encodedData, forKey: "registeredUsers")
+        }
+    }
+    
+    // Function to load registered users from UserDefaults
+    private func loadRegisteredUsers() {
+        if let userData = UserDefaults.standard.data(forKey: "registeredUsers") {
+            let decoder = JSONDecoder()
+            if let decodedUsers = try? decoder.decode([User].self, from: userData) {
+                registeredUsers = decodedUsers
+            }
+        }
     }
 }
-
-
 
 
 
@@ -123,14 +128,16 @@ struct ContentView: View {
     @State private var isLoggedIn: Bool = false
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    @State private var isLoading: Bool = false // Add loading state
+    @State private var isLoading: Bool = false
+    // Create a single instance of TaskManager
+    @StateObject var taskManager = TaskManager()
 
     var body: some View {
         NavigationView {
             VStack {
                 if isLoggedIn {
                     TabView {
-                        TaskListView(taskManager: TaskManager())
+                        TaskListView(taskManager: taskManager) // Pass the same instance of TaskManager to each view
                             .tabItem {
                                 Label("Tasks", systemImage: "list.bullet")
                             }
@@ -139,15 +146,15 @@ struct ContentView: View {
                             .tabItem {
                                 Label("Expenses", systemImage: "square.and.pencil")
                             }
+                        
                         MemoListView(memoManager: MemoManager())
                             .tabItem {
                                 Label("Memos", systemImage: "note.text")
                             }
-                        ChoresAssignerView(userManager: _userManager, taskManager: TaskManager())
+                        ChoresAssignerView(taskManager: taskManager) // Pass the same instance of TaskManager
                             .tabItem {
                                 Label("Chores Assigner", systemImage: "wand.and.stars")
-                        }
-                        
+                            }
                     }
                     .padding(.bottom, 8)
                     .edgesIgnoringSafeArea(.bottom)
@@ -190,21 +197,22 @@ struct ContentView: View {
                                                     .clipShape(Circle())
                                                     .shadow(radius: 4)
                                             }
-                                        }
-                                    }
-            )
-            .overlay(
-                // Loading indicator
-                Group {
-                    if isLoading {
-                        LoadingIndicator()
-                    }
-                }
-            )
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-    }
-}
+                                                                                   }
+                                                                               }
+                                                       )
+                                                       .overlay(
+                                                           // Loading indicator
+                                                           Group {
+                                                               if isLoading {
+                                                                   LoadingIndicator()
+                                                               }
+                                                           }
+                                                       )
+                                                   }
+                                                   .navigationViewStyle(StackNavigationViewStyle())
+                                               }
+                                           }
+
 struct LoadingIndicator: View {
     var body: some View {
         ProgressView()
@@ -214,6 +222,7 @@ struct LoadingIndicator: View {
             .shadow(radius: 5)
     }
 }
+
 
 struct LogoView: View {
     var body: some View {
@@ -358,69 +367,82 @@ struct LogoView: View {
     }
     
 //MARK: CHores assigner
-
 struct ChoresAssignerView: View {
-    @EnvironmentObject var userManager: UserManager
     @ObservedObject var taskManager: TaskManager
     @State private var assignedTask: Task?
-    @State private var selectedUser: User?
-    @State private var isWheelSpinning: Bool = false
+    @State private var isAssigningTask: Bool = false
+    @State private var timer: Timer?
     
     var body: some View {
         VStack {
-            if let selectedUser = selectedUser {
-                Text("Assigned to: \(selectedUser.username)")
-                    .font(.headline)
+            Text("Assigned Task:")
+                .font(.headline)
+                .padding()
+            
+            if let assignedTask = assignedTask {
+                Text("\(assignedTask.title) - \(assignedTask.assignedTo)")
+                    .font(.title)
+                    .padding()
+            } else if isAssigningTask {
+                Text("Assigning task...")
+                    .font(.title)
+                    .padding()
+            } else {
+                Text("No task assigned")
+                    .font(.title)
                     .padding()
             }
             
-            if isWheelSpinning {
-                WheelOfFortuneView(users: userManager.registeredUsers, onSpinEnd: { user in
-                    self.selectedUser = user
-                    self.isWheelSpinning = false
-                })
+            if isAssigningTask {
+                Button("Stop") {
+                    stopAssigningTask()
+                }
+                .padding()
+            } else {
+                Button("Lottery") {
+                    startAssigningTask()
+                }
                 .padding()
             }
-            
-            List(taskManager.tasks) { task in
-                Text("\(task.title) - \(task.assignedTo)")
-            }
-            .navigationBarTitle("Chores Assigner")
-            .navigationBarItems(trailing:
-                Button("Spin Wheel") {
-                    self.isWheelSpinning = true
-                }
-            )
+        }
+        .onDisappear {
+            timer?.invalidate()
         }
     }
     
-
+    private func startAssigningTask() {
+        isAssigningTask = true
+        timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
+            assignTask()
+        }
+    }
+    
+    private func stopAssigningTask() {
+        isAssigningTask = false
+        timer?.invalidate()
+    }
+    
+    private func assignTask() {
+        if !taskManager.tasks.isEmpty {
+            let randomIndex = Int.random(in: 0..<taskManager.tasks.count)
+            assignedTask = taskManager.tasks[randomIndex]
+        } else {
+            assignedTask = nil
+        }
+    }
 }
+
+
+
 struct WheelOfFortuneView: View {
-    let users: [User]
-    let onSpinEnd: (User) -> Void
-    @State private var spinDegrees: Double = 0
+    let tasks: [Task]
     
     var body: some View {
-        VStack {
-            Text("Tap the wheel to assign a user:")
-            WheelSpinner(degrees: $spinDegrees)
-                .onTapGesture {
-                    let randomIndex = Int.random(in: 0..<users.count)
-                    withAnimation {
-                        self.spinDegrees = 3600 + Double(randomIndex) * (360 / Double(users.count))
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                        let selectedUser = users[randomIndex]
-                        withAnimation {
-                            self.spinDegrees = 0
-                        }
-                        self.onSpinEnd(selectedUser)
-                    }
-                }
-        }
+        Text("Wheel of Fortune")
     }
 }
+
+
 
 struct WheelSpinner: View {
     @Binding var degrees: Double
@@ -442,9 +464,12 @@ struct WheelSpinner: View {
 }
 
 
-#Preview{
-    ContentView()
-        .environmentObject(UserManager())
-}
 
 
+
+
+
+    #Preview{
+        ContentView()
+            .environmentObject(UserManager())
+    }
