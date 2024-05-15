@@ -25,6 +25,7 @@
 		EE956D072BEFDBAC00D28DF2 /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956D002BEFDBAC00D28DF2 /* TaskManager.swift */; };
 		EE956D0B2BEFDBE600D28DF2 /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956D082BEFDBE600D28DF2 /* ExpenseListView.swift */; };
 		EE956D0C2BEFDBE600D28DF2 /* ExpenseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE956D092BEFDBE600D28DF2 /* ExpenseManager.swift */; };
+		EED853982BF457A60034AE34 /* ChoresAssignerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED853972BF457A60034AE34 /* ChoresAssignerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		EE956D002BEFDBAC00D28DF2 /* TaskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
 		EE956D082BEFDBE600D28DF2 /* ExpenseListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseListView.swift; sourceTree = "<group>"; };
 		EE956D092BEFDBE600D28DF2 /* ExpenseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpenseManager.swift; sourceTree = "<group>"; };
+		EED853972BF457A60034AE34 /* ChoresAssignerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoresAssignerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 		EE956CE92BEFDAC900D28DF2 /* CSC680 Project */ = {
 			isa = PBXGroup;
 			children = (
+				EED853962BF457840034AE34 /* AssigningTask */,
 				EE8C4AAF2BF3396300C6102E /* memo */,
 				EE956D0A2BEFDBE600D28DF2 /* Expenses */,
 				EE956CFB2BEFDBAC00D28DF2 /* Login */,
@@ -147,6 +150,14 @@
 				EE8C4AB02BF339C000C6102E /* ExpenseEditorView.swift */,
 			);
 			path = Expenses;
+			sourceTree = "<group>";
+		};
+		EED853962BF457840034AE34 /* AssigningTask */ = {
+			isa = PBXGroup;
+			children = (
+				EED853972BF457A60034AE34 /* ChoresAssignerView.swift */,
+			);
+			path = AssigningTask;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,6 +245,7 @@
 				EE956D032BEFDBAC00D28DF2 /* Login_View.swift in Sources */,
 				EE8C4ABE2BF3571D00C6102E /* ChecklistItemRow.swift in Sources */,
 				EE956D052BEFDBAC00D28DF2 /* TaskEditorView.swift in Sources */,
+				EED853982BF457A60034AE34 /* ChoresAssignerView.swift in Sources */,
 				EE956CEB2BEFDAC900D28DF2 /* CSC680_ProjectApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
