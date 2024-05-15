@@ -45,6 +45,10 @@ The Chore Assigner app aims to simplify the process of assigning and tracking ho
 ### Wireframe:
 ![CSC680 (1)](https://github.com/brianjien/CSC680-Final-Project/assets/62172612/0d19998a-b267-424b-8f74-9c0fc40011ea)
 
+## API used 
+# Mapkit, CoreLocation
+<img width="348" alt="image" src="https://github.com/brianjien/CSC680-Final-Project/assets/62172612/629cfd6b-f84a-4659-86cb-9ca6f31988d3">
+
 ## M2
 1. Task Management:
     * UI design for creating tasks: 2 hours
