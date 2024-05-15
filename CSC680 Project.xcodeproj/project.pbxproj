@@ -30,10 +30,10 @@
 
 /* Begin PBXFileReference section */
 		EE8C4AB02BF339C000C6102E /* ExpenseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditorView.swift; sourceTree = "<group>"; };
-		EE8C4ABA2BF3571D00C6102E /* ChecklistItemRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChecklistItemRow.swift; path = "../../../mm/CSC680-Final-Project/CSC680 Project/Memo/ChecklistItemRow.swift"; sourceTree = "<group>"; };
-		EE8C4ABB2BF3571D00C6102E /* MemoListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemoListView.swift; path = "../../../mm/CSC680-Final-Project/CSC680 Project/Memo/MemoListView.swift"; sourceTree = "<group>"; };
-		EE8C4ABC2BF3571D00C6102E /* MemoEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemoEditorView.swift; path = "../../../mm/CSC680-Final-Project/CSC680 Project/Memo/MemoEditorView.swift"; sourceTree = "<group>"; };
-		EE8C4ABD2BF3571D00C6102E /* MemoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemoManager.swift; path = "../../../mm/CSC680-Final-Project/CSC680 Project/Memo/MemoManager.swift"; sourceTree = "<group>"; };
+		EE8C4ABA2BF3571D00C6102E /* ChecklistItemRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChecklistItemRow.swift; path = ../Memo/ChecklistItemRow.swift; sourceTree = "<group>"; };
+		EE8C4ABB2BF3571D00C6102E /* MemoListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemoListView.swift; path = ../Memo/MemoListView.swift; sourceTree = "<group>"; };
+		EE8C4ABC2BF3571D00C6102E /* MemoEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemoEditorView.swift; path = ../Memo/MemoEditorView.swift; sourceTree = "<group>"; };
+		EE8C4ABD2BF3571D00C6102E /* MemoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MemoManager.swift; path = ../Memo/MemoManager.swift; sourceTree = "<group>"; };
 		EE8C4AC22BF3735400C6102E /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		EE8C4AC42BF3737C00C6102E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EE956CE72BEFDAC900D28DF2 /* CSC680 Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CSC680 Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };

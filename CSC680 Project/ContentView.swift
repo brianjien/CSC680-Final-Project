@@ -142,7 +142,7 @@ struct ContentView: View {
                                 Label("Expenses", systemImage: "square.and.pencil")
                             }
                         
-                        MemoListView(memoManager: MemoManager())
+//                        MemoListView(memoManager: MemoManager())
                             .tabItem {
                                 Label("Memos", systemImage: "note.text")
                             }
@@ -212,7 +212,7 @@ struct LoadingIndicator: View {
     var body: some View {
         ProgressView()
             .progressViewStyle(CircularProgressViewStyle())
-            .background(Color.white) // Ensure the background color is set to white
+            .background(Color.white)
             .cornerRadius(10)
             .shadow(radius: 5)
     }
@@ -292,79 +292,6 @@ struct LogoView: View {
             .padding(.horizontal, 8)
         }
     }
-    
-    
-    
-    // MARK: - Admin Dashboard View
-    
-    struct AdminDashboardView: View {
-        @EnvironmentObject var taskManager: TaskManager
-        @EnvironmentObject var expenseManager: ExpenseManager
-        
-        @State private var isTaskEditorPresented = false
-        @State private var isExpenseEditorPresented = false
-        @State private var isNoticeEditorPresented = false
-        
-        var body: some View {
-            NavigationView {
-                VStack {
-                    
-                    
-                    
-                    Button("View Tasks") {
-                        isTaskEditorPresented = true
-                    }
-                    .padding()
-                    .sheet(isPresented: $isTaskEditorPresented) {
-                        TaskListView(taskManager: taskManager)
-                    }
-                    
-                    Button("View Expenses") {
-                        isExpenseEditorPresented = true
-                    }
-                    .padding()
-                    .sheet(isPresented: $isExpenseEditorPresented) {
-                        ExpenseListView(expenseManager: expenseManager)
-                    }
-                    
-                    Button("View Notices") {
-                        isNoticeEditorPresented = true
-                    }
-                    .padding()
-                    .sheet(isPresented: $isNoticeEditorPresented) {
-                        
-                    }
-                    
-                    Spacer()
-                }
-                .navigationBarTitle("Admin Dashboard")
-            }
-        }
-    }
-    
-    // MARK: - Regular User Dashboard View
-    
-    struct RegularUserDashboardView: View {
-        
-        var body: some View {
-            NavigationView {
-                VStack {
-                    Button("View Notices") {
-                        //
-                    }
-                    .padding()
-                    
-                    Spacer()
-                }
-                .navigationBarTitle("User Dashboard")
-            }
-        }
-    }
-    
-
-
-
-
     #Preview{
         ContentView()
             .environmentObject(UserManager())

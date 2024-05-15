@@ -1,9 +1,3 @@
-//
-//  ChoresAssignerView.swift
-//  CSC680 Project
-//
-//  Created by brianjien on 5/14/24.
-//
 import SwiftUI
 //MARK: CHores assigner
 struct ChoresAssignerView: View {

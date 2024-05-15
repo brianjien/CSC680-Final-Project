@@ -1,8 +1,5 @@
 import SwiftUI
 
-
-// MARK: - Task List View
-
 struct TaskListView: View {
     @ObservedObject var taskManager: TaskManager
     @State private var isTaskEditorPresented = false

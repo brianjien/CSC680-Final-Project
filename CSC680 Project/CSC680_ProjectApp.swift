@@ -1,10 +1,3 @@
-//
-//  CSC680_ProjectApp.swift
-//  CSC680 Project
-//
-//  Created by brianjien on 5/11/24.
-//
-
 import SwiftUI
 
 @main
