@@ -5,8 +5,8 @@ import MapKit
 struct ExpenseEditorView: View {
     @ObservedObject var expenseManager: ExpenseManager
     @Binding var isPresented: Bool
-    
     var expense: Expense?
+    var onSave: (Expense) -> Void
     
     @State private var amount: String = ""
     @State private var category: String = ""
@@ -47,6 +47,8 @@ struct ExpenseEditorView: View {
                 .frame(height: 200)
         }
         .onAppear {
+            resetStateVariables()
+            
             if let expense = expense {
                 amount = "\(expense.amount)"
                 category = expense.category
@@ -56,35 +58,50 @@ struct ExpenseEditorView: View {
                 if let latitude = expense.latitude, let longitude = expense.longitude {
                     let expenseLocation = CLLocation(latitude: latitude, longitude: longitude)
                     locationHelper.location = expenseLocation
-                    locationHelper.fetchLocationDescription(for: expenseLocation) 
+                    locationHelper.fetchLocationDescription(for: expenseLocation)
                 }
             } else {
-                locationHelper.startUpdatingLocation() // Ensure location updates start
+                locationHelper.startUpdatingLocation()
             }
         }
         .navigationBarTitle(expense != nil ? "Edit Expense" : "Add Expense")
     }
     
+    private func resetStateVariables() {
+        amount = expense?.amount.description ?? ""
+        category = expense?.category ?? ""
+        contributors = expense?.contributors.joined(separator: ", ") ?? ""
+        date = expense?.date ?? Date()
+        isSettled = expense?.isSettled ?? false
+        
+        if expense == nil {
+            locationHelper.startUpdatingLocation()
+        }
+    }
+    
     private func saveExpense() {
         let contributorsArray = contributors.components(separatedBy: ",")
         
-        let updatedExpense = Expense(amount: Double(amount) ?? 0.0,
-                                     category: category,
-                                     contributors: contributorsArray,
-                                     date: date,
-                                     isSettled: isSettled,
-                                     latitude: locationHelper.location?.coordinate.latitude,
-                                     longitude: locationHelper.location?.coordinate.longitude)
+        let updatedExpense = Expense(
+            id: expense?.id ?? UUID(),
+            amount: Double(amount) ?? 0.0,
+            category: category,
+            contributors: contributorsArray,
+            date: date,
+            isSettled: isSettled,
+            latitude: locationHelper.location?.coordinate.latitude,
+            longitude: locationHelper.location?.coordinate.longitude
+        )
         
-        if let expense = expense {
-            if let index = expenseManager.expenses.firstIndex(of: expense) {
-                expenseManager.expenses[index] = updatedExpense
-            }
-        } else {
-            expenseManager.addExpense(expense: updatedExpense)
-        }
+        onSave(updatedExpense)
         
-        expenseManager.saveExpenses()
+        // Clear user input
+        amount = ""
+        category = ""
+        contributors = ""
+        date = Date()
+        isSettled = false
+        
         isPresented = false
     }
 }
@@ -151,11 +168,9 @@ class LocationHelper: NSObject, ObservableObject, CLLocationManagerDelegate {
         case .denied, .restricted:
             print("Authorization denied or restricted.")
             authorized = false
-            // Handle denied or restricted access
         case .notDetermined:
             print("Authorization not determined.")
             authorized = false
-            // Authorization status not determined
         @unknown default:
             fatalError("Unhandled authorization status.")
         }
@@ -229,3 +244,5 @@ struct ExpenseRow: View {
         return formatter
     }()
 }
+
+    

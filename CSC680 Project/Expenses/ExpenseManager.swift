@@ -22,25 +22,27 @@ class ExpenseManager: ObservableObject {
         expenses.remove(at: index)
     }
     
-    func saveExpenses() {
-        do {
-            // Encode latitude and longitude separately
-            let encodedExpenses = expenses.map { expense in
-                return Expense(id: expense.id,
-                               amount: expense.amount,
-                               category: expense.category,
-                               contributors: expense.contributors,
-                               date: expense.date,
-                               isSettled: expense.isSettled,
-                               latitude: expense.latitude,
-                               longitude: expense.longitude)
-            }
-            let data = try PropertyListEncoder().encode(encodedExpenses)
-            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("expenses.plist")
-            try data.write(to: url)
-        } catch {
-            print("Error saving expenses: \(error)")
-        }
-    }
+    func loadExpenses() {
+          if let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("expenses.json") {
+              do {
+                  let data = try Data(contentsOf: url)
+                  let decodedExpenses = try JSONDecoder().decode([Expense].self, from: data)
+                  expenses = decodedExpenses
+              } catch {
+                  print("Error loading expenses: \(error)")
+              }
+          }
+      }
+      
+      func saveExpenses() {
+          if let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("expenses.json") {
+              do {
+                  let encodedExpenses = try JSONEncoder().encode(expenses)
+                  try encodedExpenses.write(to: url)
+              } catch {
+                  print("Error saving expenses: \(error)")
+              }
+          }
+      }
 
 }

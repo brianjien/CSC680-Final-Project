@@ -1,5 +1,6 @@
 import SwiftUI
-
+import Foundation
+import CoreLocation
 // MARK: - Models
 
 struct Task: Identifiable, Codable {
@@ -14,10 +15,9 @@ enum TaskStatus {
     case inProgress
     case completed
 }
-import Foundation
-import CoreLocation
 
-struct Expense: Identifiable, Encodable, Equatable {
+
+struct Expense: Identifiable,  Equatable,Codable {
     var id = UUID()
     var amount: Double
     var category: String
@@ -35,7 +35,7 @@ struct Memo: Identifiable, Equatable, Codable {
     var title: String
     var content: String
     var date: Date
-    var checklistItems: [ChecklistItem] // New property for checklist items
+    var checklistItems: [ChecklistItem] 
     
     static func == (lhs: Memo, rhs: Memo) -> Bool {
         return lhs.id == rhs.id
