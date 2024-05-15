@@ -1,4 +1,7 @@
 import SwiftUI
+import CoreLocation
+import MapKit
+
 struct ExpenseEditorView: View {
     @ObservedObject var expenseManager: ExpenseManager
     @Binding var isPresented: Bool
@@ -10,24 +13,38 @@ struct ExpenseEditorView: View {
     @State private var contributors: String = ""
     @State private var date: Date = Date()
     @State private var isSettled: Bool = false
-    @State private var isSaving: Bool = false
+    @StateObject private var locationHelper = LocationHelper()
     
     var body: some View {
-        Form {
-            TextField("Amount", text: $amount)
-                .keyboardType(.decimalPad)
-            TextField("Category", text: $category)
-            TextField("Contributors", text: $contributors)
-            DatePicker("Date", selection: $date, displayedComponents: .date)
-            Toggle("Settled", isOn: $isSettled)
-            
-            Button(action: {
-                isSaving = true
-                saveExpense()
-            }) {
-                Text("Save")
+        VStack {
+            Form {
+                TextField("Amount", text: $amount)
+                    .keyboardType(.decimalPad)
+                TextField("Category", text: $category)
+                TextField("Contributors", text: $contributors)
+                DatePicker("Date", selection: $date, displayedComponents: .date)
+                Toggle("Settled", isOn: $isSettled)
+                
+                if let location = locationHelper.location {
+                    Text("Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+                    if let locationDescription = locationHelper.locationDescription {
+                        Text("Area: \(locationDescription)")
+                    } else {
+                        Text("Fetching location details...")
+                    }
+                } else {
+                    Text("Location: Updating...")
+                }
+                
+                Button(action: {
+                    saveExpense()
+                }) {
+                    Text("Save")
+                }
             }
-            .disabled(isSaving)
+            
+            MapView(location: $locationHelper.location)
+                .frame(height: 200)
         }
         .onAppear {
             if let expense = expense {
@@ -36,6 +53,13 @@ struct ExpenseEditorView: View {
                 contributors = expense.contributors.joined(separator: ", ")
                 date = expense.date
                 isSettled = expense.isSettled
+                if let latitude = expense.latitude, let longitude = expense.longitude {
+                    let expenseLocation = CLLocation(latitude: latitude, longitude: longitude)
+                    locationHelper.location = expenseLocation
+                    locationHelper.fetchLocationDescription(for: expenseLocation) 
+                }
+            } else {
+                locationHelper.startUpdatingLocation() // Ensure location updates start
             }
         }
         .navigationBarTitle(expense != nil ? "Edit Expense" : "Add Expense")
@@ -43,45 +67,155 @@ struct ExpenseEditorView: View {
     
     private func saveExpense() {
         let contributorsArray = contributors.components(separatedBy: ",")
-        let updatedExpense = Expense(amount: Double(amount) ?? 0.0, category: category, contributors: contributorsArray, date: date, isSettled: isSettled)
+        
+        let updatedExpense = Expense(amount: Double(amount) ?? 0.0,
+                                     category: category,
+                                     contributors: contributorsArray,
+                                     date: date,
+                                     isSettled: isSettled,
+                                     latitude: locationHelper.location?.coordinate.latitude,
+                                     longitude: locationHelper.location?.coordinate.longitude)
+        
         if let expense = expense {
-            expenseManager.updateExpense(at: expenseManager.expenses.firstIndex(of: expense)!, with: updatedExpense)
+            if let index = expenseManager.expenses.firstIndex(of: expense) {
+                expenseManager.expenses[index] = updatedExpense
+            }
         } else {
             expenseManager.addExpense(expense: updatedExpense)
         }
         
         expenseManager.saveExpenses()
-        
-        isSaving = false
-        isPresented = false // 在保存後關閉編輯頁面
+        isPresented = false
     }
 }
 
+struct MapView: UIViewRepresentable {
+    @Binding var location: CLLocation?
+    
+    func makeUIView(context: Context) -> MKMapView {
+        MKMapView(frame: .zero)
+    }
+    
+    func updateUIView(_ uiView: MKMapView, context: Context) {
+        uiView.removeAnnotations(uiView.annotations)
+        
+        if let location = location {
+            let coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            uiView.addAnnotation(annotation)
+            
+            let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            uiView.setRegion(region, animated: true)
+        }
+    }
 
+    
+
+}
+
+
+class LocationHelper: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private var locationManager = CLLocationManager()
+    private var geocoder = CLGeocoder()
+    
+    @Published var authorized = false
+    @Published var location: CLLocation?
+    @Published var locationDescription: String?
+    
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        requestAuthorization()
+    }
+    
+    func requestAuthorization() {
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func startUpdatingLocation() {
+        if authorized {
+            print("Starting location updates...")
+            locationManager.startUpdatingLocation()
+        } else {
+            print("Not authorized to start location updates.")
+        }
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            print("Authorization granted.")
+            authorized = true
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted:
+            print("Authorization denied or restricted.")
+            authorized = false
+            // Handle denied or restricted access
+        case .notDetermined:
+            print("Authorization not determined.")
+            authorized = false
+            // Authorization status not determined
+        @unknown default:
+            fatalError("Unhandled authorization status.")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let newLocation = locations.last else { return }
+        location = newLocation
+        print("Updated location: \(newLocation.coordinate.latitude), \(newLocation.coordinate.longitude)")
+        fetchLocationDescription(for: newLocation)
+        locationManager.stopUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location manager failed with error: \(error.localizedDescription)")
+    }
+    
+    func fetchLocationDescription(for location: CLLocation) {
+        geocoder.reverseGeocodeLocation(location) { [weak self] (placemarks, error) in
+            guard let self = self else { return }
+            if let error = error {
+                print("Failed to reverse geocode location: \(error.localizedDescription)")
+                return
+            }
+            if let placemark = placemarks?.first {
+                self.locationDescription = [
+                    placemark.locality,
+                    placemark.administrativeArea,
+                    placemark.country
+                ]
+                .compactMap { $0 }
+                .joined(separator: ", ")
+            }
+        }
+    }
+}
 
 struct ExpenseRow: View {
     var expense: Expense
-    var onEdit: () -> Void // 添加 onEdit 闭包
+    var onEdit: () -> Void
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Amount: \(expense.amount)")
-                    .font(.headline)
-                Text("Category: \(expense.category)")
-                    .font(.subheadline)
-                Text("Contributors: \(expense.contributors.joined(separator: ", "))")
-                    .font(.subheadline)
-                Text("Date: \(expense.date, formatter: dateFormatter)")
-                    .font(.subheadline)
-            }
-            .padding(.vertical)
-            
-            Spacer()
-            
-            Button(action: {
-                onEdit() // 点击编辑按钮时调用 onEdit 闭包
-            }) {
+        Button(action: {
+            onEdit()
+        }) {
+            HStack {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Amount: \(expense.amount)")
+                        .font(.headline)
+                    Text("Category: \(expense.category)")
+                        .font(.subheadline)
+                    Text("Contributors: \(expense.contributors.joined(separator: ", "))")
+                        .font(.subheadline)
+                    Text("Date: \(expense.date, formatter: dateFormatter)")
+                        .font(.subheadline)
+                }
+                .padding(.vertical)
+                
+                Spacer()
+                
                 Image(systemName: "square.and.pencil")
                     .foregroundColor(.blue)
             }

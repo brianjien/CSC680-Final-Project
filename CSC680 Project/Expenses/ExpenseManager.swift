@@ -1,37 +1,46 @@
 import SwiftUI
+import Foundation
+
 class ExpenseManager: ObservableObject {
     @Published var expenses: [Expense] = []
     
-    init() {
-        loadExpenses()
-    }
-    
     func addExpense(expense: Expense) {
         expenses.append(expense)
-        saveExpenses()
-    }
-    
-    func deleteExpense(at index: Int) {
-        expenses.remove(at: index)
-        saveExpenses()
     }
     
     func updateExpense(at index: Int, with expense: Expense) {
+        guard index >= 0 && index < expenses.count else {
+            return
+        }
         expenses[index] = expense
-        saveExpenses()
+    }
+    
+    func deleteExpense(at index: Int) {
+        guard index >= 0 && index < expenses.count else {
+            return
+        }
+        expenses.remove(at: index)
     }
     
     func saveExpenses() {
-        if let encodedData = try? JSONEncoder().encode(expenses) {
-            UserDefaults.standard.set(encodedData, forKey: "expenses")
+        do {
+            // Encode latitude and longitude separately
+            let encodedExpenses = expenses.map { expense in
+                return Expense(id: expense.id,
+                               amount: expense.amount,
+                               category: expense.category,
+                               contributors: expense.contributors,
+                               date: expense.date,
+                               isSettled: expense.isSettled,
+                               latitude: expense.latitude,
+                               longitude: expense.longitude)
+            }
+            let data = try PropertyListEncoder().encode(encodedExpenses)
+            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("expenses.plist")
+            try data.write(to: url)
+        } catch {
+            print("Error saving expenses: \(error)")
         }
     }
-    
-    private func loadExpenses() {
-        if let expensesData = UserDefaults.standard.data(forKey: "expenses"),
-           let decodedExpenses = try? JSONDecoder().decode([Expense].self, from: expensesData) {
-            self.expenses = decodedExpenses
-        }
-    }
-}
 
+}

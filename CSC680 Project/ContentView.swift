@@ -14,17 +14,19 @@ enum TaskStatus {
     case inProgress
     case completed
 }
+import Foundation
+import CoreLocation
 
-
-struct Expense: Identifiable, Equatable, Codable {
+struct Expense: Identifiable, Encodable, Equatable {
     var id = UUID()
     var amount: Double
     var category: String
     var contributors: [String]
     var date: Date
     var isSettled: Bool
+    var latitude: Double?
+    var longitude: Double?
 }
-
 
 
 // MARK: - Memo Model
@@ -71,7 +73,6 @@ class UserManager: ObservableObject {
     var registeredUsers: [User] = []
     
     init() {
-        // Load registered users from UserDefaults on initialization
         loadRegisteredUsers()
     }
     func login(username: String, password: String) {
@@ -92,10 +93,9 @@ class UserManager: ObservableObject {
     func register(username: String, password: String) {
         let newUser = User(username: username, password: password)
         registeredUsers.append(newUser)
-        saveRegisteredUsers() // Save registered users after adding a new user
+        saveRegisteredUsers()
     }
     
-    // Function to save registered users to UserDefaults
     private func saveRegisteredUsers() {
         let encoder = JSONEncoder()
         if let encodedData = try? encoder.encode(registeredUsers) {
@@ -103,7 +103,6 @@ class UserManager: ObservableObject {
         }
     }
     
-    // Function to load registered users from UserDefaults
     private func loadRegisteredUsers() {
         if let userData = UserDefaults.standard.data(forKey: "registeredUsers") {
             let decoder = JSONDecoder()
@@ -132,7 +131,7 @@ struct ContentView: View {
             VStack {
                 if isLoggedIn {
                     TabView {
-                        TaskListView(taskManager: taskManager) // Pass the same instance of TaskManager to each view
+                        TaskListView(taskManager: taskManager)
                             .tabItem {
                                 Label("Tasks", systemImage: "list.bullet")
                             }
@@ -142,7 +141,7 @@ struct ContentView: View {
                                 Label("Expenses", systemImage: "square.and.pencil")
                             }
                         
-//                        MemoListView(memoManager: MemoManager())
+                        MemoListView(memoManager: MemoManager())
                             .tabItem {
                                 Label("Memos", systemImage: "note.text")
                             }
